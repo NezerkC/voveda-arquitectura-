@@ -1,0 +1,13 @@
+# Obsidian session state and cache
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/cache/
+
+# Tooling and local agents
+.opencode/
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini

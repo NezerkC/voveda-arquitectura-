@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Centro de Mando de Arquitectura & Tablero Kanban Multiagente</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    :root {
+      --background: #0f172a;
+      --content: #1e293b;
+      --card: #1e293b;
+      --border: #334155;
+      --foreground: #f8fafc;
+      --muted-foreground: #94a3b8;
+      --primary: #3b82f6;
+      --primary-foreground: #ffffff;
+      --accent: #8b5cf6;
+      --accent-foreground: #ffffff;
+      --success: #10b981;
+    }
+    body {
+      background-color: var(--background);
+      color: var(--foreground);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    }
+    .glass-panel {
+      background: rgba(30, 41, 59, 0.75);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.2rem 0.6rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .tab-btn.active {
+      background: #3b82f6;
+      color: #ffffff;
+      box-shadow: 0 4px 14px 0 rgba(59, 130, 246, 0.39);
+    }
+    .kanban-col {
+      min-height: 520px;
+    }
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body class="min-h-screen p-3 md:p-6">
+
+  <!-- Header / Hero Section -->
+  <header class="max-w-7xl mx-auto mb-8 text-center">
+    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-semibold uppercase tracking-wider mb-3">
+      <span class="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
+      Sistema Multiagente Enterprise • 47 Agentes Especialistas
+    </div>
+    <h1 class="text-2xl md:text-4xl font-extrabold tracking-tight mb-3 bg-gradient-to-r from-blue-400 via-indigo-300 to-purple-400 bg-clip-text text-transparent">
+      Centro de Mando & Tablero Kanban de Arquitectura
+    </h1>
+    <p class="text-slate-400 max-w-3xl mx-auto text-xs md:text-sm">
+      Visualizá la cadena de mando completa: desde el descubrimiento del <span class="text-blue-400 font-semibold">Product Manager</span>, el control de flujo en el <span class="text-purple-400 font-semibold">Tablero Kanban del Scrum Master</span>, hasta los 12 pilares técnicos.
+    </p>
+
+    <!-- Navigation Tabs -->
+    <div class="flex flex-wrap justify-center gap-2 mt-6">
+      <button onclick="switchTab('kanban')" id="tab-btn-kanban" class="tab-btn active px-4 py-2 rounded-xl font-medium text-xs md:text-sm transition-all border border-slate-700 hover:border-blue-500 flex items-center gap-2">
+        <span>📋</span> Tablero Kanban (Scrum Master)
+      </button>
+      <button onclick="switchTab('flow')" id="tab-btn-flow" class="tab-btn px-4 py-2 rounded-xl font-medium text-xs md:text-sm text-slate-300 transition-all border border-slate-700 hover:border-blue-500 flex items-center gap-2">
+        <span>🔄</span> Flujo Jerárquico (PM &rarr; SM &rarr; Lead)
+      </button>
+      <button onclick="switchTab('agents')" id="tab-btn-agents" class="tab-btn px-4 py-2 rounded-xl font-medium text-xs md:text-sm text-slate-300 transition-all border border-slate-700 hover:border-blue-500 flex items-center gap-2">
+        <span>👥</span> Directorio de 47 Agentes
+      </button>
+      <button onclick="switchTab('skills')" id="tab-btn-skills" class="tab-btn px-4 py-2 rounded-xl font-medium text-xs md:text-sm text-slate-300 transition-all border border-slate-700 hover:border-blue-500 flex items-center gap-2">
+        <span>⚡</span> Skills Multiagente & Pipeline
+      </button>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto">
+
+    <!-- ============================================================= -->
+    <!-- TAB 0: TABLERO KANBAN (SCRUM MASTER & WIP CONTROL)           -->
+    <!-- ============================================================= -->
+    <section id="view-kanban" class="space-y-6">
+      
+      <!-- Top Metrics & Action Bar -->
+      <div class="glass-panel p-4 rounded-2xl border border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div class="flex flex-wrap items-center gap-4 text-xs font-mono">
+          <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800">
+            <span class="text-slate-400">WIP Actual:</span>
+            <span id="metric-wip" class="text-blue-400 font-bold">2 / 5</span>
+          </div>
+          <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800">
+            <span class="text-slate-400">Estado de Flujo:</span>
+            <span class="text-emerald-400 font-bold flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Óptimo (Sin Cuellos de Botella)
+            </span>
+          </div>
+          <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800">
+            <span class="text-slate-400">Ley de Little:</span>
+            <span class="text-purple-300">Stop Starting, Start Finishing</span>
+          </div>
+        </div>
+
+        <button onclick="openNewTaskModal()" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-medium text-xs transition-all shadow-lg shadow-blue-500/20 flex items-center gap-1.5">
+          <span>➕</span> Nueva Historia (Scrum Master)
+        </button>
+      </div>
+
+      <!-- 5-Column Kanban Board -->
+      <div class="grid grid-cols-1 md:grid-cols-5 gap-3.5">
+        
+        <!-- Col 1: Backlog (PRD) -->
+        <div class="flex flex-col bg-slate-900/60 p-3 rounded-2xl border border-slate-800/80 kanban-col">
+          <div class="flex items-center justify-between pb-3 mb-3 border-b border-slate-800">
+            <div class="flex items-center gap-1.5">
+              <span class="text-base">📥</span>
+              <h3 class="font-bold text-xs text-white">Backlog (PRD)</h3>
+            </div>
+            <span class="badge-pill bg-slate-800 text-slate-400 text-[10px]" id="count-backlog">0</span>
+          </div>
+          <div id="col-backlog" class="space-y-3 flex-1 overflow-y-auto">
+            <!-- Cards rendered by JS -->
+          </div>
+        </div>
+
+        <!-- Col 2: Ready for Dev (DoR) -->
+        <div class="flex flex-col bg-slate-900/60 p-3 rounded-2xl border border-slate-800/80 kanban-col">
+          <div class="flex items-center justify-between pb-3 mb-3 border-b border-slate-800">
+            <div class="flex items-center gap-1.5">
+              <span class="text-base">📋</span>
+              <h3 class="font-bold text-xs text-white">Ready (DoR)</h3>
+            </div>
+            <div class="flex items-center gap-1">
+              <span class="badge-pill bg-blue-950/80 text-blue-400 text-[10px] border border-blue-800/40">WIP &le; 3</span>
+              <span class="badge-pill bg-slate-800 text-slate-400 text-[10px]" id="count-ready">0</span>
+            </div>
+          </div>
+          <div id="col-ready" class="space-y-3 flex-1 overflow-y-auto">
+            <!-- Cards rendered by JS -->
+          </div>
+        </div>
+
+        <!-- Col 3: En Progreso (Especialistas) -->
+        <div class="flex flex-col bg-slate-900/80 p-3 rounded-2xl border border-purple-900/40 kanban-col shadow-inner">
+          <div class="flex items-center justify-between pb-3 mb-3 border-b border-slate-800">
+            <div class="flex items-center gap-1.5">
+              <span class="text-base">⚙️</span>
+              <h3 class="font-bold text-xs text-purple-300">En Progreso</h3>
+            </div>
+            <div class="flex items-center gap-1">
+              <span class="badge-pill bg-purple-950/80 text-purple-400 text-[10px] border border-purple-800/40">WIP &le; 2</span>
+              <span class="badge-pill bg-slate-800 text-slate-400 text-[10px]" id="count-inprogress">0</span>
+            </div>
+          </div>
+          <div id="col-inprogress" class="space-y-3 flex-1 overflow-y-auto">
+            <!-- Cards rendered by JS -->
+          </div>
+        </div>
+
+        <!-- Col 4: Review & Fitness Tests -->
+        <div class="flex flex-col bg-slate-900/60 p-3 rounded-2xl border border-slate-800/80 kanban-col">
+          <div class="flex items-center justify-between pb-3 mb-3 border-b border-slate-800">
+            <div class="flex items-center gap-1.5">
+              <span class="text-base">🧪</span>
+              <h3 class="font-bold text-xs text-amber-300">Fitness & QA</h3>
+            </div>
+            <div class="flex items-center gap-1">
+              <span class="badge-pill bg-amber-950/80 text-amber-400 text-[10px] border border-amber-800/40">WIP &le; 2</span>
+              <span class="badge-pill bg-slate-800 text-slate-400 text-[10px]" id="count-review">0</span>
+            </div>
+          </div>
+          <div id="col-review" class="space-y-3 flex-1 overflow-y-auto">
+            <!-- Cards rendered by JS -->
+          </div>
+        </div>
+
+        <!-- Col 5: Done (Producción OCI) -->
+        <div class="flex flex-col bg-slate-900/60 p-3 rounded-2xl border border-emerald-900/40 kanban-col">
+          <div class="flex items-center justify-between pb-3 mb-3 border-b border-slate-800">
+            <div class="flex items-center gap-1.5">
+              <span class="text-base">🚀</span>
+              <h3 class="font-bold text-xs text-emerald-300">Done (Deploy)</h3>
+            </div>
+            <span class="badge-pill bg-emerald-950/80 text-emerald-400 text-[10px] border border-emerald-800/40" id="count-done">0</span>
+          </div>
+          <div id="col-done" class="space-y-3 flex-1 overflow-y-auto">
+            <!-- Cards rendered by JS -->
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- TAB 1: FLUJO JERÁRQUICO (START-NEW-PROJECT)                   -->
+    <!-- ============================================================= -->
+    <section id="view-flow" class="hidden space-y-8">
+      
+      <div class="glass-panel p-6 md:p-8 rounded-2xl border border-slate-800">
+        <h2 class="text-xl md:text-2xl font-bold mb-2 text-white flex items-center gap-3">
+          <span class="p-2 rounded-lg bg-blue-500/20 text-blue-400 text-lg">🎯</span>
+          Skill <code class="text-blue-400 bg-blue-950/50 px-2 py-0.5 rounded border border-blue-800/40">start-new-project</code>: Cadena de Mando
+        </h2>
+        <p class="text-slate-400 text-sm mb-6">
+          Separación estricta entre definición de negocio, planificación ágil y ejecución técnica. Hacé clic en cada rol para ver sus detalles, inputs y entregables.
+        </p>
+
+        <!-- Stepper Visualizer -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 relative">
+          <div onclick="selectFlowStep(1)" id="flow-card-1" class="cursor-pointer p-5 rounded-xl border-2 border-blue-500 bg-slate-800/80 transition-all hover:scale-[1.02] shadow-lg shadow-blue-500/10">
+            <div class="flex items-center justify-between mb-3">
+              <span class="badge-pill bg-slate-700 text-slate-300">Paso 1</span>
+              <span class="text-2xl">👤</span>
+            </div>
+            <h3 class="font-bold text-white text-base mb-1">Usuario / Stakeholder</h3>
+            <p class="text-slate-400 text-xs line-clamp-2">Plantea la idea, problema a resolver y preferencias técnicas.</p>
+          </div>
+
+          <div onclick="selectFlowStep(2)" id="flow-card-2" class="cursor-pointer p-5 rounded-xl border border-slate-700 bg-slate-800/40 transition-all hover:scale-[1.02]">
+            <div class="flex items-center justify-between mb-3">
+              <span class="badge-pill bg-blue-500/20 text-blue-400">Paso 2</span>
+              <span class="text-2xl">📋</span>
+            </div>
+            <h3 class="font-bold text-white text-base mb-1">Agente Product Manager</h3>
+            <p class="text-slate-400 text-xs line-clamp-2">Entrevista guiada. Descubrimiento de reglas de negocio y PRD.</p>
+          </div>
+
+          <div onclick="selectFlowStep(3)" id="flow-card-3" class="cursor-pointer p-5 rounded-xl border border-slate-700 bg-slate-800/40 transition-all hover:scale-[1.02]">
+            <div class="flex items-center justify-between mb-3">
+              <span class="badge-pill bg-purple-500/20 text-purple-400">Paso 3</span>
+              <span class="text-2xl">📊</span>
+            </div>
+            <h3 class="font-bold text-white text-base mb-1">Agente Scrum Master</h3>
+            <p class="text-slate-400 text-xs line-clamp-2">Desglose en Épicas, Historias (DoR) y límites de WIP.</p>
+          </div>
+
+          <div onclick="selectFlowStep(4)" id="flow-card-4" class="cursor-pointer p-5 rounded-xl border border-slate-700 bg-slate-800/40 transition-all hover:scale-[1.02]">
+            <div class="flex items-center justify-between mb-3">
+              <span class="badge-pill bg-emerald-500/20 text-emerald-400">Paso 4</span>
+              <span class="text-2xl">👑</span>
+            </div>
+            <h3 class="font-bold text-white text-base mb-1">Agente Orquestador</h3>
+            <p class="text-slate-400 text-xs line-clamp-2">Lead Architect coordina DAG técnico (DDD, Clean, DB, CI/CD).</p>
+          </div>
+        </div>
+
+        <div id="flow-detail-box" class="mt-6 p-6 rounded-xl bg-slate-900/90 border border-slate-800"></div>
+      </div>
+
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- TAB 2: DIRECTORIO DE 47 AGENTES                               -->
+    <!-- ============================================================= -->
+    <section id="view-agents" class="hidden space-y-6">
+      
+      <div class="glass-panel p-4 md:p-6 rounded-2xl border border-slate-800 flex flex-col md:flex-row gap-4 justify-between items-center">
+        <div class="w-full md:w-72 relative">
+          <input type="text" id="agent-search" oninput="filterAgents()" placeholder="Buscar agente (ej. DDD, Postgres, Docker)..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500">
+        </div>
+        
+        <div class="flex flex-wrap gap-1.5 justify-center md:justify-end" id="pillar-filters"></div>
+      </div>
+
+      <div id="agents-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- TAB 3: SKILLS MULTIAGENTE CATALOG                             -->
+    <!-- ============================================================= -->
+    <section id="view-skills" class="hidden space-y-6">
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- Skill Card: start-new-project -->
+        <div class="glass-panel p-6 rounded-2xl border border-blue-500/30 relative overflow-hidden">
+          <div class="flex items-center justify-between mb-4">
+            <span class="badge-pill bg-blue-500/20 text-blue-400 border border-blue-500/30">Skill de Inicio</span>
+            <span class="text-xs text-slate-400">Multiagente (3 Roles)</span>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2">start-new-project</h3>
+          <p class="text-slate-300 text-sm mb-4">Orquesta el onboarding guiado, redacción del PRD, refinamiento ágil de historias y disparo del desarrollo técnico.</p>
+          <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800 mb-4 text-xs font-mono text-slate-300 space-y-1">
+            <div class="text-blue-400 font-semibold">Cadena de Ejecución:</div>
+            <div>Agente Product Manager &rarr; Agente Scrum Master &rarr; Agente Orquestador</div>
+          </div>
+          <div class="text-xs text-slate-400">
+            <strong>Entregables:</strong> <code class="text-slate-300">docs/PRD.md</code>, <code class="text-slate-300">docs/BACKLOG.md</code>
+          </div>
+        </div>
+
+        <!-- Skill Card: skill-ddd-domain-design -->
+        <div class="glass-panel p-6 rounded-2xl border border-purple-500/30 relative overflow-hidden">
+          <div class="flex items-center justify-between mb-4">
+            <span class="badge-pill bg-purple-500/20 text-purple-400 border border-purple-500/30">Fase 1: Dominio</span>
+            <span class="text-xs text-slate-400">Multiagente (3 Fases)</span>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2">skill-ddd-domain-design</h3>
+          <p class="text-slate-300 text-sm mb-4">Modela el corazón del negocio y sus invariantes en código puro, completamente aislado de frameworks y bases de datos.</p>
+          <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800 mb-4 text-xs font-mono text-slate-300 space-y-1">
+            <div class="text-purple-400 font-semibold">Cadena de Ejecución:</div>
+            <div>Agente BDD &rarr; Agente DDD &rarr; Agente CDD</div>
+          </div>
+          <div class="text-xs text-slate-400">
+            <strong>Directorio destino:</strong> <code class="text-slate-300">src/domain/</code>
+          </div>
+        </div>
+
+        <!-- Skill Card: skill-clean-hexagonal-scaffold -->
+        <div class="glass-panel p-6 rounded-2xl border border-indigo-500/30 relative overflow-hidden">
+          <div class="flex items-center justify-between mb-4">
+            <span class="badge-pill bg-indigo-500/20 text-indigo-400 border border-indigo-500/30">Fase 2: Arquitectura</span>
+            <span class="text-xs text-slate-400">Multiagente (3 Fases)</span>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2">skill-clean-hexagonal-scaffold</h3>
+          <p class="text-slate-300 text-sm mb-4">Construye la arquitectura en capas (Puertos y Adaptadores), Casos de Uso y validación estricta en runtime.</p>
+          <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800 mb-4 text-xs font-mono text-slate-300 space-y-1">
+            <div class="text-indigo-400 font-semibold">Cadena de Ejecución:</div>
+            <div>Agente Hexagonal / Clean &rarr; Agente Runtime Validation &rarr; Agente Lenguaje</div>
+          </div>
+          <div class="text-xs text-slate-400">
+            <strong>Directorios destino:</strong> <code class="text-slate-300">src/application/</code>, <code class="text-slate-300">src/infrastructure/</code>
+          </div>
+        </div>
+
+        <!-- Skill Card: skill-resilient-persistence -->
+        <div class="glass-panel p-6 rounded-2xl border border-emerald-500/30 relative overflow-hidden">
+          <div class="flex items-center justify-between mb-4">
+            <span class="badge-pill bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">Fase 3: Datos</span>
+            <span class="text-xs text-slate-400">Multiagente (4 Fases)</span>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2">skill-resilient-persistence</h3>
+          <p class="text-slate-300 text-sm mb-4">Esquema relacional normalizado con migraciones, tabla Outbox transaccional, idempotencia y circuit breakers.</p>
+          <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800 mb-4 text-xs font-mono text-slate-300 space-y-1">
+            <div class="text-emerald-400 font-semibold">Cadena de Ejecución:</div>
+            <div>Agente PostgreSQL &rarr; Agente Outbox &rarr; Agente Idempotencia &rarr; Agente Retries</div>
+          </div>
+          <div class="text-xs text-slate-400">
+            <strong>Directorio destino:</strong> <code class="text-slate-300">src/infrastructure/persistence/</code>, <code class="text-slate-300">migrations/</code>
+          </div>
+        </div>
+
+        <!-- Skill Card: production-project-architect (Master) -->
+        <div class="glass-panel p-6 rounded-2xl border border-amber-500/40 relative overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-amber-950/20 md:col-span-2">
+          <div class="flex items-center justify-between mb-4">
+            <span class="badge-pill bg-amber-500/20 text-amber-400 border border-amber-500/30">Meta-Skill Maestra</span>
+            <span class="text-xs text-amber-300 font-semibold">End-to-End (5 Fases)</span>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2">production-project-architect</h3>
+          <p class="text-slate-300 text-sm mb-4">Orquestador de alto nivel que encadena todas las fases anteriores para construir y desplegar un proyecto enterprise completo.</p>
+          <div class="p-3 bg-slate-950/60 rounded-xl border border-amber-900/40 mb-4 text-xs font-mono text-amber-200/90 space-y-1">
+            <div class="text-amber-400 font-semibold">Pipeline Completo:</div>
+            <div>Dominio (DDD) &rarr; Capas (Clean) &rarr; Datos (Postgres/Outbox) &rarr; Tests (TDD) &rarr; CI/CD (Docker)</div>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Task Detail Modal -->
+  <div id="task-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="glass-panel p-6 rounded-2xl border border-slate-700 max-w-lg w-full relative">
+      <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg">✕</button>
+      <div id="modal-content"></div>
+    </div>
+  </div>
+
+  <!-- Script for interactivity -->
+  <script>
+    // Tab switching
+    function switchTab(tabId) {
+      document.getElementById('view-kanban').classList.add('hidden');
+      document.getElementById('view-flow').classList.add('hidden');
+      document.getElementById('view-agents').classList.add('hidden');
+      document.getElementById('view-skills').classList.add('hidden');
+      
+      document.getElementById('tab-btn-kanban').classList.remove('active');
+      document.getElementById('tab-btn-flow').classList.remove('active');
+      document.getElementById('tab-btn-agents').classList.remove('active');
+      document.getElementById('tab-btn-skills').classList.remove('active');
+
+      document.getElementById(`view-${tabId}`).classList.remove('hidden');
+      document.getElementById(`tab-btn-${tabId}`).classList.add('active');
+    }
+
+    // ==========================================
+    // KANBAN BOARD STATE & LOGIC
+    // ==========================================
+    let tasks = [
+      {
+        id: "US-001",
+        title: "Modelado Táctico de Dominio (Auth & Perfiles)",
+        status: "inprogress",
+        priority: "CRÍTICA",
+        agent: "Agente DDD",
+        pillar: "01-Metodologias",
+        epic: "EPIC-01: Autenticación",
+        desc: "Definir Value Objects inmutables (Email, PasswordHash) y Aggregate Root User con invariantes.",
+        criteria: "Given un email inválido, When se crea el usuario, Then arroja InvalidEmailException.",
+        target: "src/domain/model/user.ts"
+      },
+      {
+        id: "US-002",
+        title: "Contratos de Entrada & Validación Runtime",
+        status: "ready",
+        priority: "ALTA",
+        agent: "Agente Runtime Validation",
+        pillar: "03-Contratos",
+        epic: "EPIC-01: Autenticación",
+        desc: "Diseñar esquemas Zod/Pydantic para el DTO RegisterUserCommand y LoginCommand.",
+        criteria: "Given un payload sin password, When se valida el schema, Then retorna 422 con errores tipados.",
+        target: "src/application/schemas/auth.schema.ts"
+      },
+      {
+        id: "US-003",
+        title: "Diseño DDL Postgres & Migraciones",
+        status: "ready",
+        priority: "ALTA",
+        agent: "Agente PostgreSQL",
+        pillar: "10-Persistencia",
+        epic: "EPIC-01: Autenticación",
+        desc: "Crear tabla 'users' con constraint de unicidad en email y hash de contraseñas.",
+        criteria: "Given una migración SQL, When se ejecuta en vacío, Then crea la tabla y sus índices B-Tree.",
+        target: "migrations/0001_create_users_table.sql"
+      },
+      {
+        id: "US-004",
+        title: "Definición del PRD: Flujo de Pagos Recurrentes",
+        status: "backlog",
+        priority: "MEDIA",
+        agent: "Agente Product Manager",
+        pillar: "Gestión",
+        epic: "EPIC-02: Pagos & Facturación",
+        desc: "Entrevista de negocio sobre pasarelas (Stripe), planes mensuales y cancelaciones.",
+        criteria: "Documento docs/PRD.md con las reglas de negocio de suscripciones.",
+        target: "docs/PRD.md"
+      },
+      {
+        id: "US-005",
+        title: "Tests de Arquitectura (Fitness Functions)",
+        status: "review",
+        priority: "ALTA",
+        agent: "Agente Fitness Functions",
+        pillar: "04-Gobernanza",
+        epic: "EPIC-00: Infra & Calidad",
+        desc: "Automatizar test con ts-arch para verificar que src/domain/ no importe paquetes externos.",
+        criteria: "Given una importación prohibida en domain/, When corre el test, Then la suite falla.",
+        target: "tests/architecture/layer_boundaries.test.ts"
+      },
+      {
+        id: "US-006",
+        title: "Dockerfile Multi-stage & GitHub Actions CI",
+        status: "done",
+        priority: "ALTA",
+        agent: "Agente Docker OCI",
+        pillar: "11-DevOps",
+        epic: "EPIC-00: Infra & Calidad",
+        desc: "Configuración OCI con usuario no-root y workflow ci.yml con linting y typecheck.",
+        criteria: "Given un push a main, When corre GitHub Actions, Then el build y scan de seguridad pasan verde.",
+        target: "Dockerfile, .github/workflows/ci.yml"
+      }
+    ];
+
+    const columns = ["backlog", "ready", "inprogress", "review", "done"];
+
+    function renderKanban() {
+      columns.forEach(col => {
+        const colEl = document.getElementById(`col-${col}`);
+        const colTasks = tasks.filter(t => t.status === col);
+        document.getElementById(`count-${col}`).innerText = colTasks.length;
+
+        if (colTasks.length === 0) {
+          colEl.innerHTML = `<div class="p-4 text-center text-slate-600 text-xs border border-dashed border-slate-800 rounded-xl my-2">Sin tareas</div>`;
+          return;
+        }
+
+        colEl.innerHTML = colTasks.map(t => `
+          <div class="p-3.5 rounded-xl bg-slate-800/90 border border-slate-700/80 hover:border-slate-500 transition-all shadow-sm">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-[10px] font-mono font-bold text-blue-400">${t.id}</span>
+              <span class="badge-pill text-[9px] ${
+                t.priority === 'CRÍTICA' ? 'bg-red-500/20 text-red-400 border border-red-500/30' :
+                t.priority === 'ALTA' ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' :
+                'bg-slate-700 text-slate-300'
+              }">${t.priority}</span>
+            </div>
+
+            <h4 class="text-xs font-bold text-white mb-1.5 line-clamp-2">${t.title}</h4>
+            <p class="text-slate-400 text-[11px] line-clamp-2 mb-3 leading-relaxed">${t.desc}</p>
+
+            <div class="p-1.5 bg-slate-900/80 rounded-lg border border-slate-800 text-[10px] text-purple-300 font-mono mb-3 flex items-center justify-between">
+              <span>🤖 ${t.agent}</span>
+            </div>
+
+            <!-- Card Actions -->
+            <div class="flex items-center justify-between pt-2 border-t border-slate-700/60 text-xs">
+              <button onclick="showTaskDetail('${t.id}')" class="text-blue-400 hover:text-blue-300 text-[11px] font-medium">Ver Detalle</button>
+              
+              <div class="flex items-center gap-1">
+                ${col !== 'backlog' ? `<button onclick="moveTask('${t.id}', -1)" title="Retroceder estado" class="w-6 h-6 rounded bg-slate-700 hover:bg-slate-600 text-slate-300 flex items-center justify-center text-[10px]">◀</button>` : ''}
+                ${col !== 'done' ? `<button onclick="moveTask('${t.id}', 1)" title="Avanzar estado" class="w-6 h-6 rounded bg-blue-600 hover:bg-blue-500 text-white flex items-center justify-center text-[10px]">▶</button>` : ''}
+              </div>
+            </div>
+          </div>
+        `).join('');
+      });
+
+      // Update WIP metric
+      const inProgressCount = tasks.filter(t => t.status === 'inprogress').length;
+      document.getElementById('metric-wip').innerText = `${inProgressCount} / 2 (WIP Activo)`;
+    }
+
+    function moveTask(taskId, direction) {
+      const task = tasks.find(t => t.id === taskId);
+      if (!task) return;
+      const currentIndex = columns.indexOf(task.status);
+      const nextIndex = currentIndex + direction;
+
+      if (nextIndex >= 0 && nextIndex < columns.length) {
+        const nextStatus = columns[nextIndex];
+        // Enforce WIP limit on inprogress (max 2)
+        if (nextStatus === 'inprogress') {
+          const currentInProgress = tasks.filter(t => t.status === 'inprogress').length;
+          if (currentInProgress >= 2) {
+            alert('⚠️ LÍMITE DE WIP ALCANZADO: El Scrum Master no permite más de 2 tareas en progreso simultáneo. Aplicando Ley de Little (Stop starting, start finishing).');
+            return;
+          }
+        }
+        task.status = nextStatus;
+        renderKanban();
+      }
+    }
+
+    function showTaskDetail(taskId) {
+      const t = tasks.find(item => item.id === taskId);
+      if (!t) return;
+      document.getElementById('modal-content').innerHTML = `
+        <div class="flex items-center justify-between mb-3">
+          <span class="badge-pill bg-blue-500/20 text-blue-400 font-mono text-xs">${t.id} • ${t.epic}</span>
+          <span class="badge-pill bg-slate-800 text-slate-300 text-xs">${t.status.toUpperCase()}</span>
+        </div>
+        <h3 class="text-base font-bold text-white mb-2">${t.title}</h3>
+        <p class="text-slate-300 text-xs mb-4 leading-relaxed">${t.desc}</p>
+
+        <div class="space-y-2.5 text-xs font-mono mb-4">
+          <div class="p-2.5 bg-slate-950 rounded-lg border border-slate-800">
+            <span class="text-purple-400 font-bold block mb-0.5">🤖 AGENTE RESPONSABLE:</span>
+            <span class="text-slate-300">${t.agent} (${t.pillar})</span>
+          </div>
+          <div class="p-2.5 bg-slate-950 rounded-lg border border-slate-800">
+            <span class="text-emerald-400 font-bold block mb-0.5">🎯 CRITERIO DE ACEPTACIÓN (DoR):</span>
+            <span class="text-slate-300">${t.criteria}</span>
+          </div>
+          <div class="p-2.5 bg-slate-950 rounded-lg border border-slate-800">
+            <span class="text-cyan-400 font-bold block mb-0.5">📁 ARCHIVO DESTINO:</span>
+            <span class="text-slate-300">${t.target}</span>
+          </div>
+        </div>
+
+        <div class="flex justify-end">
+          <button onclick="closeModal()" class="px-4 py-1.5 rounded-lg bg-slate-700 hover:bg-slate-600 text-white text-xs">Cerrar</button>
+        </div>
+      `;
+      document.getElementById('task-modal').classList.remove('hidden');
+    }
+
+    function closeModal() {
+      document.getElementById('task-modal').classList.add('hidden');
+    }
+
+    function openNewTaskModal() {
+      const newId = `US-00${tasks.length + 1}`;
+      document.getElementById('modal-content').innerHTML = `
+        <h3 class="text-base font-bold text-white mb-3">➕ Nueva Historia de Usuario (Scrum Master)</h3>
+        <div class="space-y-3 text-xs">
+          <div>
+            <label class="block text-slate-400 mb-1">Título de la Historia:</label>
+            <input type="text" id="new-title" placeholder="ej. Implementar Caso de Uso ProcesarPago" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-white">
+          </div>
+          <div>
+            <label class="block text-slate-400 mb-1">Agente Asignado:</label>
+            <select id="new-agent" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-white">
+              <option value="Agente DDD">Agente DDD (Dominio)</option>
+              <option value="Agente Hexagonal">Agente Hexagonal (Puertos/Casos de Uso)</option>
+              <option value="Agente PostgreSQL">Agente PostgreSQL (Persistencia)</option>
+              <option value="Agente TDD">Agente TDD (Testing)</option>
+              <option value="Agente Docker OCI">Agente Docker OCI (DevOps)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-slate-400 mb-1">Criterio de Aceptación (Given-When-Then):</label>
+            <input type="text" id="new-criteria" placeholder="Given ... When ... Then ..." class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-white">
+          </div>
+        </div>
+        <div class="flex justify-end gap-2 mt-5">
+          <button onclick="closeModal()" class="px-3 py-1.5 rounded-lg bg-slate-700 text-slate-300 text-xs">Cancelar</button>
+          <button onclick="addNewTask('${newId}')" class="px-4 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold">Crear Tarea</button>
+        </div>
+      `;
+      document.getElementById('task-modal').classList.remove('hidden');
+    }
+
+    function addNewTask(newId) {
+      const title = document.getElementById('new-title').value;
+      const agent = document.getElementById('new-agent').value;
+      const criteria = document.getElementById('new-criteria').value;
+
+      if (!title) {
+        alert('Por favor ingresá un título para la historia.');
+        return;
+      }
+
+      tasks.push({
+        id: newId,
+        title: title,
+        status: "backlog",
+        priority: "ALTA",
+        agent: agent,
+        pillar: "Desarrollo",
+        epic: "Sprint Backlog",
+        desc: "Historia creada por el Scrum Master.",
+        criteria: criteria || "Criterios estándar de DoD.",
+        target: "src/..."
+      });
+
+      closeModal();
+      renderKanban();
+    }
+
+    // ==========================================
+    // FLOW & AGENTS DATA
+    // ==========================================
+    const flowSteps = {
+      1: {
+        title: "1. Usuario / Stakeholder (Iniciador)",
+        badge: "Paso 1 • Entrada",
+        desc: "El usuario dispara la necesidad: plantea la idea o problema de negocio a resolver.",
+        inputs: "Prompt inicial, requerimientos informales.",
+        outputs: "Entrada para el proceso de descubrimiento.",
+        example: `"Quiero una plataforma de streaming con cobros recurrentes y perfiles"`
+      },
+      2: {
+        title: "2. Agente Product Manager (Descubrimiento & PRD)",
+        badge: "Paso 2 • Negocio",
+        desc: "Entrevista guiada. Descubre el dominio, reglas de negocio, usuarios e invariantes.",
+        inputs: "Respuestas del usuario a las preguntas de negocio.",
+        outputs: "Documento oficial docs/PRD.md con alcance claro y restricciones.",
+        example: `Preguntas: ¿Cuáles son las reglas de pago? ¿Qué pasa si una suscripción vence?`
+      },
+      3: {
+        title: "3. Agente Scrum Master (Gestión Ágil & Kanban)",
+        badge: "Paso 3 • Planificación",
+        desc: "Desglosa el PRD en Épicas e Historias en el Tablero Kanban, gestiona límites de WIP y entrega tareas refinadas al Lead Architect.",
+        inputs: "docs/PRD.md validado.",
+        outputs: "docs/BACKLOG.md, historias con DoR en el tablero Kanban.",
+        example: `[US-001] Como Usuario quiero registrarme con email para acceder.`
+      },
+      4: {
+        title: "4. Agente Orquestador (Lead Architect & Especialistas)",
+        badge: "Paso 4 • Ejecución Técnica",
+        desc: "Coordina a los 47 especialistas técnicos: Dominio Puro (DDD) -> Capas (Clean) -> Base de Datos (Postgres/Outbox) -> Tests -> CI/CD.",
+        inputs: "Historia de usuario refinada con Criterios de Aceptación.",
+        outputs: "Código en producción, tests verdes, migraciones y pipeline CI/CD.",
+        example: `Agente DDD -> Agente Clean Architecture -> Agente Docker OCI.`
+      }
+    };
+
+    function selectFlowStep(stepNum) {
+      for (let i = 1; i <= 4; i++) {
+        const card = document.getElementById(`flow-card-${i}`);
+        if (i === stepNum) {
+          card.classList.add('border-blue-500', 'bg-slate-800/80', 'shadow-lg', 'shadow-blue-500/10');
+          card.classList.remove('border-slate-700', 'bg-slate-800/40');
+        } else {
+          card.classList.remove('border-blue-500', 'bg-slate-800/80', 'shadow-lg', 'shadow-blue-500/10');
+          card.classList.add('border-slate-700', 'bg-slate-800/40');
+        }
+      }
+
+      const data = flowSteps[stepNum];
+      document.getElementById('flow-detail-box').innerHTML = `
+        <div class="flex items-center justify-between mb-3">
+          <h4 class="text-base font-bold text-white">${data.title}</h4>
+          <span class="badge-pill bg-blue-500/20 text-blue-400 border border-blue-500/30 text-xs">${data.badge}</span>
+        </div>
+        <p class="text-slate-300 text-xs mb-3 leading-relaxed">${data.desc}</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs font-mono">
+          <div class="p-2.5 bg-slate-950/70 rounded-lg border border-slate-800">
+            <span class="text-emerald-400 font-bold block mb-1">📥 INPUTS:</span>
+            <span class="text-slate-300">${data.inputs}</span>
+          </div>
+          <div class="p-2.5 bg-slate-950/70 rounded-lg border border-slate-800">
+            <span class="text-cyan-400 font-bold block mb-1">📤 OUTPUTS:</span>
+            <span class="text-slate-300">${data.outputs}</span>
+          </div>
+        </div>
+      `;
+    }
+
+    const agentsData = [
+      { name: "Agente BDD", pillar: "01-Metodologias", role: "Especialista en Behavior-Driven Development (BDD)", desc: "Escribe especificaciones en Gherkin (Given-When-Then) y escenarios de prueba ejecutables." },
+      { name: "Agente DDD", pillar: "01-Metodologias", role: "Especialista en Domain-Driven Design (DDD)", desc: "Modela Entidades, Value Objects, Agregados e Invariantes sin contaminación de frameworks." },
+      { name: "Agente CDD", pillar: "01-Metodologias", role: "Especialista en Contract-Driven Development (CDD)", desc: "Define contratos de frontera e interfaces entre Bounded Contexts y sistemas externos." },
+      { name: "Agente TDD", pillar: "01-Metodologias", role: "Especialista en Test-Driven Development (TDD)", desc: "Guía el ciclo Red-Green-Refactor para asegurar lógica robusta y testeada antes de codificar." },
+      { name: "Agente Clean Architecture", pillar: "02-Patrones", role: "Especialista en Clean Architecture", desc: "Aplica la Regla de Dependencias concéntrica: el núcleo nunca depende de la infraestructura." },
+      { name: "Agente Hexagonal", pillar: "02-Patrones", role: "Especialista en Arquitectura Hexagonal (Ports & Adapters)", desc: "Separa la lógica de aplicación mediante Driving Ports (Casos de Uso) y Driven Ports (Interfaces)." },
+      { name: "Agente Monolito Modular", pillar: "02-Patrones", role: "Especialista en Monolitos Modulares", desc: "Define módulos con fronteras estrictas y comunicación interna explícita sin microservicios prematuros." },
+      { name: "Agente CQRS", pillar: "02-Patrones", role: "Especialista en CQRS", desc: "Separa las operaciones de escritura (Commands) de los modelos optimizados de lectura (Queries)." },
+      { name: "Agente EDA", pillar: "02-Patrones", role: "Especialista en Event-Driven Architecture", desc: "Diseña eventos de dominio, topologías de colas, topics y publicación asíncrona de mensajes." },
+      { name: "Agente JSON Schema", pillar: "03-Contratos", role: "Especialista en JSON Schema", desc: "Genera esquemas formales para payloads I/O y Structured Outputs de modelos LLM." },
+      { name: "Agente Runtime Validation", pillar: "03-Contratos", role: "Especialista en Validación Runtime", desc: "Valida datos en las fronteras de entrada y salida con tipado estricto en tiempo de ejecución." },
+      { name: "Agente ADR", pillar: "04-Gobernanza", role: "Especialista en Architecture Decision Records", desc: "Estandariza el registro de decisiones técnicas, contexto evaluado, consecuencias y trade-offs." },
+      { name: "Agente Fitness Functions", pillar: "04-Gobernanza", role: "Especialista en Architectural Fitness Functions", desc: "Escribe tests automáticos que impiden que capas externas violen la pureza del dominio." },
+      { name: "Agente Idempotencia", pillar: "05-Resiliencia", role: "Especialista en Idempotencia", desc: "Garantiza que llamadas duplicadas de clientes o reintentos no provoquen efectos secundarios indeseados." },
+      { name: "Agente Outbox", pillar: "05-Resiliencia", role: "Especialista en Transactional Outbox Pattern", desc: "Persiste estado y eventos en la misma transacción ACID de base de datos para cero pérdida de datos." },
+      { name: "Agente Circuit Breaker", pillar: "05-Resiliencia", role: "Especialista en Circuit Breakers", desc: "Abre el circuito ante fallas consecutivas en servicios externos para evitar caídas en cascada." },
+      { name: "Agente OpenTelemetry", pillar: "06-Observabilidad", role: "Especialista en OpenTelemetry (OTel)", desc: "Instrumenta trazas distribuidas, métricas y spans estandarizados en todo el ciclo de vida." },
+      { name: "Agente Zero Trust", pillar: "07-Seguridad", role: "Especialista en Seguridad Zero Trust", desc: "Aplica autenticación continua, tokens de corta duración y principio de mínimo privilegio." },
+      { name: "Agente Python", pillar: "08-Lenguajes", role: "Especialista en Python 3.12+ Moderno", desc: "Código idiomático con uv, pyproject.toml, mypy --strict, Pydantic v2 y AsyncIO nativo." },
+      { name: "Agente TypeScript", pillar: "08-Lenguajes", role: "Especialista en TypeScript Estricto", desc: "TypeScript moderno con tsconfig estricto, Zod, empaquetado OCI y tipado seguro." },
+      { name: "Agente PostgreSQL", pillar: "10-Persistencia", role: "Especialista en PostgreSQL Relacional", desc: "Modelado DDL relacional, índices B-Tree/GIN, constraints estrictas y migraciones deterministas." },
+      { name: "Agente Docker OCI", pillar: "11-DevOps", role: "Especialista en Docker & Contenedores OCI", desc: "Imágenes multi-stage optimizadas, cache de capas y ejecución estricta bajo usuario nonroot." },
+      { name: "Agente CI CD Pipeline", pillar: "11-DevOps", role: "Especialista en GitHub Actions CI/CD", desc: "Pipelines paralelos de lint, typecheck, tests, build y escaneo de vulnerabilidades con Trivy." },
+      { name: "Agente Trunk Based", pillar: "12-Metodologias-Agiles", role: "Especialista en Trunk-Based Development", desc: "Ramas de vida corta (<24h), feature flags y merges continuos contra main sin branches eternas." },
+      { name: "Agente DORA", pillar: "12-Metodologias-Agiles", role: "Especialista en Continuous Delivery & DORA", desc: "Optimización de métricas DORA: frecuencia de deploy, lead time, change failure rate y MTTR." }
+    ];
+
+    let currentFilter = 'ALL';
+
+    function renderFilters() {
+      const pillars = ['ALL', ...new Set(agentsData.map(a => a.pillar))];
+      const container = document.getElementById('pillar-filters');
+      container.innerHTML = pillars.map(p => `
+        <button onclick="setFilter('${p}')" class="px-2.5 py-1 rounded-lg text-xs font-medium border transition-all ${currentFilter === p ? 'bg-blue-600 text-white border-blue-500' : 'bg-slate-900/80 text-slate-400 border-slate-800 hover:border-slate-600'}">
+          ${p === 'ALL' ? 'Todos (' + agentsData.length + ')' : p.replace(/^\d+-/, '')}
+        </button>
+      `).join('');
+    }
+
+    function setFilter(filter) {
+      currentFilter = filter;
+      renderFilters();
+      filterAgents();
+    }
+
+    function filterAgents() {
+      const query = document.getElementById('agent-search').value.toLowerCase();
+      const grid = document.getElementById('agents-grid');
+
+      const filtered = agentsData.filter(a => {
+        const matchesFilter = currentFilter === 'ALL' || a.pillar === currentFilter;
+        const matchesQuery = a.name.toLowerCase().includes(query) || a.role.toLowerCase().includes(query) || a.desc.toLowerCase().includes(query);
+        return matchesFilter && matchesQuery;
+      });
+
+      grid.innerHTML = filtered.map(a => `
+        <div class="glass-panel p-4 rounded-xl border border-slate-800 hover:border-slate-700 transition-all flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <span class="badge-pill bg-slate-800 text-slate-400 text-[10px] border border-slate-700/50">${a.pillar}</span>
+              <span class="text-xs text-blue-400 font-mono font-semibold">Specialist</span>
+            </div>
+            <h4 class="text-sm font-bold text-white mb-1">${a.name}</h4>
+            <div class="text-[11px] text-blue-300/80 mb-2 font-medium">${a.role}</div>
+            <p class="text-slate-400 text-xs leading-relaxed mb-3">${a.desc}</p>
+          </div>
+          <div class="pt-2 border-t border-slate-800/80 flex items-center justify-between text-[10px] text-slate-500 font-mono">
+            <span>Harness: Universal</span>
+            <span class="text-emerald-400">✓ Production Ready</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Initial load
+    renderKanban();
+    selectFlowStep(1);
+    renderFilters();
+    filterAgents();
+  </script>
+</body>
+</html>
