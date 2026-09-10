@@ -1,7 +1,7 @@
 ---
 tipo: agente-especialista
 categoria: devops
-fase: infraestructura
+fase: 6
 rol: Especialista en GitOps y Despliegues Declarativos (ArgoCD / Flux)
 harness_compatible: ["antigravity", "opencode", "cursor", "claude-code"]
 dependencias: ["[[Agente Kubernetes]]", "[[Agente Terraform IaC]]"]

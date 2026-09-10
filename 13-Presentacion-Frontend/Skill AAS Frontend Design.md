@@ -2,7 +2,7 @@
 tipo: skill-externa
 origen: agentic-awesome-skills
 categoria: frameworks-ui
-fase: 3
+fase: 7
 rol: Senior Frontend Engineer
 harness_compatible: ["universal"]
 dependencias: ["[[Skill AAS UI UX Pro Max]]", "[[Agente NextJS]]", "[[Agente React]]"]
@@ -23,7 +23,7 @@ OBJECTIVE: Build production-grade frontend interfaces using modern stacks
 ```
 
 ## 1. Posición en el Flujo de Trabajo
-Esta skill se ejecuta en la **Fase 3 (Patrones & Adaptadores)**. Es un "Driving Adapter" que interactúa con los puertos de entrada de nuestra Clean Architecture/Arquitectura Hexagonal.
+Esta skill se ejecuta en la **Fase 7 (Presentación & Frontend)**. Es un "Driving Adapter" que interactúa con los puertos de entrada de nuestra Clean Architecture/Arquitectura Hexagonal.
 
 ## 2. Responsabilidades
 - Convertir el sistema de diseño (tokens) en componentes reutilizables.

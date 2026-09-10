@@ -6,7 +6,7 @@ usos: [CASO_DE_USO_1, CASO_DE_USO_2]
 capacidades: [CAPACIDAD_ESPECIFICA]
 rol: [TITULO_DEL_ROL]
 harness_compatible: ["universal"]
-dependencias_sugeridas: ["[[Agente Requisito 1]]"]
+dependencias_sugeridas: ["[Agente Requisito 1]"]
 tags:
   - origen/[ORIGEN]
   - uso/[CASO_DE_USO]

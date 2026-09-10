@@ -1,7 +1,7 @@
 ---
 tipo: agente-especialista
 categoria: gobernanza
-fase: 6
+fase: gobernanza
 rol: Especialista en Request for Comments (RFC)
 harness_compatible: ["antigravity", "opencode", "cursor", "claude-code"]
 dependencias: ["[[Agente RDD]]", "[[Agente DDD]]"]

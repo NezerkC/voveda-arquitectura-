@@ -1,7 +1,7 @@
 ---
 tipo: agente-especialista
 categoria: devops
-fase: infraestructura
+fase: 6
 rol: Especialista en CI/CD Pipelines Automatizados (GitHub Actions / GitLab CI)
 harness_compatible: ["antigravity", "opencode", "cursor", "claude-code"]
 dependencias: ["[[Agente Fitness Functions]]", "[[Agente TDD]]", "[[Agente Docker OCI]]"]

@@ -2,7 +2,7 @@
 tipo: skill-externa
 origen: agentic-awesome-skills
 categoria: gobernanza
-fase: 6
+fase: gobernanza
 rol: Senior Code Reviewer
 harness_compatible: ["universal"]
 dependencias: ["[[Agente ADR]]", "[[Agente RFC]]"]

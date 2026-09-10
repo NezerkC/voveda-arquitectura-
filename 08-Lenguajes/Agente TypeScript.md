@@ -5,7 +5,7 @@ fase: adaptadores
 rol: Especialista en TypeScript y Ecosistemas Modernos (Node / Bun / Deno)
 harness_compatible: ["antigravity", "opencode", "cursor", "claude-code"]
 dependencias: ["[[Agente Hexagonal]]", "[[Agente Runtime Validation]]"]
-siguiente_paso: ["[[Agente Fastify]]", "[[Agente NextJS]]"]
+siguiente_paso: ["[[Agente NestJS Fastify]]", "[[Agente NextJS]]"]
 tags:
   - agente/lenguaje
   - lenguaje/typescript

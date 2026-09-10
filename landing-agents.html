@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Centro de Mando de Arquitectura & Tablero Kanban Multiagente</title>
-  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
     :root {
       --background: #0f172a;
@@ -478,9 +478,32 @@
         epic: "EPIC-00: Infra & Calidad",
         desc: "Configuración OCI con usuario no-root y workflow ci.yml con linting y typecheck.",
         criteria: "Given un push a main, When corre GitHub Actions, Then el build y scan de seguridad pasan verde.",
-        target: "Dockerfile, .github/workflows/ci.yml"
       }
     ];
+
+    const STORAGE_KEY = 'voveda_kanban_tasks_v1';
+
+    function loadTasks() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            tasks = parsed;
+          }
+        }
+      } catch (e) {
+        console.warn('Could not load tasks from localStorage', e);
+      }
+    }
+
+    function saveTasks() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+      } catch (e) {
+        console.warn('Could not save tasks to localStorage', e);
+      }
+    }
 
     const columns = ["backlog", "ready", "inprogress", "review", "done"];
 
@@ -548,6 +571,7 @@
           }
         }
         task.status = nextStatus;
+        saveTasks();
         renderKanban();
       }
     }
@@ -645,6 +669,7 @@
       });
 
       closeModal();
+      saveTasks();
       renderKanban();
     }
 
@@ -794,6 +819,7 @@
     }
 
     // Initial load
+    loadTasks();
     renderKanban();
     selectFlowStep(1);
     renderFilters();

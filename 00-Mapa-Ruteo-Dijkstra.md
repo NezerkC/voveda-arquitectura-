@@ -19,21 +19,23 @@ graph TD
     classDef pilar fill:#2c3e50,stroke:#34495e,stroke-width:2px,color:#fff,shape:circle;
     classDef hub fill:#e67e22,stroke:#d35400,stroke-width:2px,color:#fff,shape:hexagon;
 
-    %% Pilares (Nodos de Estado)
+    %% Pilares (Nodos de Estado Canónicos)
     P1(((1. Dominio))):::pilar
     P2(((2. Contratos))):::pilar
-    P3(((3. Backend))):::pilar
+    P3(((3. Arquitectura))):::pilar
+    P4(((4. Resiliencia & Seguridad))):::pilar
+    P5(((5. Observabilidad))):::pilar
+    P6(((6. DevOps & Infra))):::pilar
     P7(((7. Frontend))):::pilar
-    P4(((4. Seguridad))):::pilar
-    P5(((5. DevOps & Prod))):::pilar
 
     %% Hubs Transicionales (Gateways de ruteo)
     H1_2{Hub: Modelado API}:::hub
     H2_3{Hub: Código Backend}:::hub
     H2_7{Hub: Tokens Visuales}:::hub
-    H3_4{Hub: Auditoría SAST}:::hub
-    H7_5{Hub: Empaquetado Web}:::hub
-    H4_5{Hub: Infra Backend}:::hub
+    H3_4{Hub: Hardening & Fault Tolerance}:::hub
+    H4_5{Hub: Telemetría OTel}:::hub
+    H5_6{Hub: Despliegue CI/CD}:::hub
+    H7_6{Hub: Empaquetado Web}:::hub
 
     %% Rutas y Pesos (Dijkstra Cost)
     P1 -- "Costo: Alto (20)" --> H1_2 --> P2
@@ -42,7 +44,8 @@ graph TD
     
     P3 -- "Costo: Alto (20)" --> H3_4 --> P4
     P4 -- "Costo: Medio (10)" --> H4_5 --> P5
-    P7 -- "Costo: Medio (10)" --> H7_5 --> P5
+    P5 -- "Costo: Bajo (5)" --> H5_6 --> P6
+    P7 -- "Costo: Medio (10)" --> H7_6 --> P6
 ```
 
 ## ¿Cómo funciona el cálculo de Dijkstra en este flujo?
@@ -50,11 +53,11 @@ graph TD
 Si el sistema recibe un requerimiento, el Orquestador evalúa los pesos del grafo:
 
 **Escenario A: "Agregar un nuevo módulo de pagos"**
-* Requiere Dominio (P1) -> Contratos (P2) -> Backend (P3) -> Seguridad (P4) -> DevOps (P5).
-* **Costo Total:** 20 + 15 + 20 + 10 = **65**. Ruta larga y pesada, se despliegan todos los multi-agentes.
+* Requiere Dominio (P1) -> Contratos (P2) -> Arquitectura (P3) -> Seguridad & Resiliencia (P4) -> Observabilidad (P5) -> DevOps (P6).
+* **Costo Total:** 20 + 15 + 20 + 10 + 5 = **70**. Ruta integral de producción, se despliegan los especialistas de backend y hardening.
 
 **Escenario B: "Cambiar el color del botón principal y tipografía"**
-* El Orquestador detecta que no hay mutación de datos. El costo de pasar por P1 y P3 es infinto (innecesario).
-* Entra por Contratos UI (P2) -> Hub Tokens Visuales (Costo 5) -> Frontend (P7) -> Hub Empaquetado (Costo 10) -> DevOps (P5).
+* El Orquestador detecta que no hay mutación de datos ni backend. El costo de pasar por P1, P3, P4 y P5 es innecesario.
+* Entra por Contratos UI (P2) -> Hub Tokens Visuales (Costo 5) -> Frontend (P7) -> Hub Empaquetado Web (Costo 10) -> DevOps (P6).
 * **Costo Total:** 5 + 10 = **15**. 
-* **Resultado:** El sistema toma el atajo (shortest path). Se ahorra el tiempo y los tokens de despertar a los agentes de Backend y Seguridad profunda.
+* **Resultado:** El sistema toma el atajo (shortest path). Se ahorra el tiempo y los tokens de despertar a los agentes de persistencia y seguridad profunda.

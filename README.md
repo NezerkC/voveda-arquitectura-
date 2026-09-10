@@ -18,7 +18,7 @@ Para que tanto ingenieros humanos como agentes de IA compartan el mismo modelo c
 | **Combinación** | **Hub Simple** | Cruce entre pilares con transferencia de contexto ligera entre agentes específicos. |
 | **Estación Intermodal** | **Hub Masivo (Scatter-Gather)** | Punto de alta complejidad donde se despiertan múltiples agentes en paralelo para sincronizar el estado global. |
 
-El **[[Agente Orquestador]]** utiliza algoritmos de ruteo (Dijkstra) para trazar la ruta crítica óptima entre pilares ante cualquier requerimiento de software.
+El **`[[Agente Orquestador]]`** utiliza algoritmos de ruteo (Dijkstra) para trazar la ruta crítica óptima entre pilares ante cualquier requerimiento de software.
 
 ---
 
@@ -57,7 +57,7 @@ architecture-vault/
 1. **Abrir la Bóveda**: Iniciar Obsidian y seleccionar *Open folder as vault*, eligiendo este directorio.
 2. **Dashboard de Inicio**: Abrir `Indice General.md` para visualizar el catálogo completo de pilares y agentes.
 3. **Navegación Gráfica**:
-   - Presionar `Ctrl + G` (o `Cmd + G` en macOS) para explorar la vista en grafo con las conexiones bidireccionales (`[[WikiLinks]]`).
+   - Presionar `Ctrl + G` (o `Cmd + G` en macOS) para explorar la vista en grafo con las conexiones bidireccionales (WikiLinks).
    - Abrir `landing-agents.html` en el navegador para una experiencia visual interactiva de la red.
 4. **Trazado de Arquitectura**: Consultar `00-Mapa-Ruteo-Dijkstra.md` para seguir el pipeline paso a paso al diseñar un nuevo sistema o funcionalidad.
 
@@ -86,12 +86,12 @@ Agradecemos contribuciones que fortalezcan los patrones de arquitectura, incorpo
 
 1. **Fork** del repositorio en GitHub:
    ```bash
-   https://github.com/NezerkC/voveda-arquitectura-
+   https://github.com/NezerkC/voveda-arquitectura
    ```
 2. **Clonar** tu fork localmente:
    ```bash
-   git clone https://github.com/TU-USUARIO/voveda-arquitectura-.git
-   cd voveda-arquitectura-
+   git clone https://github.com/TU-USUARIO/voveda-arquitectura.git
+   cd voveda-arquitectura
    ```
 3. **Crear una rama** para tu cambio:
    ```bash

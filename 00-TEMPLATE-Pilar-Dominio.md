@@ -22,5 +22,5 @@ Definí las reglas estrictas de esta estación para evitar el acoplamiento:
 
 ## 3. Directorio de Skills (Entradas a la Estación)
 Listado de los agentes especialistas que trabajan físicamente dentro de esta carpeta:
-*   [[Nombre de la Skill 1]]
-*   [[Nombre de la Skill 2]]
+*   `[Nombre de la Skill 1]`
+*   `[Nombre de la Skill 2]`

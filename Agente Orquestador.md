@@ -8,14 +8,16 @@ tags:
   - arquitectura/lead
   - harness/universal
 conexiones:
-  fase_1: ["[[Agente RDD]]", "[[Agente BDD]]", "[[Agente DDD]]", "[[Skill AAS Test Driven Development]]"]
-  fase_2: ["[[Agente CDD]]", "[[Agente JSON Schema]]", "[[Agente Runtime Validation]]", "[[Agente OpenAPI]]", "[[Skill AAS API Platform Builder]]"]
-  fase_3: ["[[Agente Monolito Modular]]", "[[Agente Hexagonal]]", "[[Agente Clean Architecture]]", "[[Agente EDA]]"]
-  fase_4: ["[[Agente Idempotencia]]", "[[Agente Outbox]]", "[[Agente Circuit Breaker]]"]
-  fase_5: ["[[Agente Zero Trust]]", "[[Agente Sanitizacion Fronteras]]", "[[Skill AAS Security Engineer]]", "[[Skill AAS Observability Monitoring]]"]
-  fase_6: ["[[Agente TDD]]", "[[Agente EDD]]", "[[Agente Fitness Functions]]", "[[Agente ADR]]", "[[Agente RFC]]", "[[Skill AAS Code Review]]"]
+  fase_1: ["[[Agente RDD]]", "[[Agente BDD]]", "[[Agente DDD]]"]
+  fase_2: ["[[Agente CDD]]", "[[Agente JSON Schema]]", "[[Agente OpenAPI]]", "[[Agente Runtime Validation]]", "[[Agente Tool Schemas]]"]
+  fase_3: ["[[Agente Monolito Modular]]", "[[Agente Hexagonal]]", "[[Agente Clean Architecture]]", "[[Agente CQRS]]", "[[Agente EDA]]"]
+  fase_4: ["[[Agente Circuit Breaker]]", "[[Agente Retry Backoff]]", "[[Agente Idempotencia]]", "[[Agente Outbox]]", "[[Agente Zero Trust]]", "[[Agente Sanitizacion Fronteras]]", "[[Agente Sandbox Aislamiento]]", "[[Skill AAS Security Engineer]]"]
+  fase_5: ["[[Agente OpenTelemetry]]", "[[Agente Structured Logging]]", "[[Agente SLI SLO]]"]
+  fase_6: ["[[Agente Docker OCI]]", "[[Agente Kubernetes]]", "[[Agente CI CD Pipeline]]", "[[Agente Terraform IaC]]", "[[Agente GitOps]]", "[[Skill AAS DevOps Cloud]]"]
   fase_7: ["[[Skill AAS UI UX Pro Max]]", "[[Skill AAS Frontend Design]]"]
-  plataforma_entrega: ["[[Agente Docker OCI]]", "[[Agente CI CD Pipeline]]", "[[Agente GitOps]]", "[[Skill AAS DevOps Cloud]]", "[[Skill AAS QA Test Automation]]"]
+  gobernanza: ["[[Agente ADR]]", "[[Agente RFC]]", "[[Agente Fitness Functions]]", "[[Agente TDD]]", "[[Agente EDD]]", "[[Skill AAS Code Review]]"]
+  adaptadores: ["[[Agente TypeScript]]", "[[Agente Python]]", "[[Agente Go]]", "[[Agente Rust]]", "[[Agente FastAPI]]", "[[Agente NextJS]]", "[[Agente NestJS Fastify]]", "[[Agente React]]", "[[Agente PostgreSQL]]", "[[Agente Redis Cache]]", "[[Agente Vector DB]]"]
+  gestion_entrega: ["[[Agente Scrum]]", "[[Agente XP]]", "[[Agente Kanban WIP]]", "[[Agente Trunk Based Development]]", "[[Agente Continuous Delivery DORA]]", "[[Agente Shape Up]]"]
 ---
 
 # AGENTE ORQUESTADOR (LEAD ARCHITECT)
@@ -48,16 +50,15 @@ flowchart TD
     subgraph P1 [1. Intención & Dominio]
         RDD["[[Agente RDD]]"] --> BDD["[[Agente BDD]]"]
         BDD --> DDD["[[Agente DDD]]"]
-        DDD --> AAS_TDD["[[Skill AAS Test Driven Development]]"]
     end
 
     subgraph P2 [2. Contratos & Schemas]
         CDD["[[Agente CDD]]"] --> JS["[[Agente JSON Schema]]"]
-        JS --> OAPI["[[Agente OpenAPI]]"]
-        OAPI --> AAS_API["[[Skill AAS API Platform Builder]]"]
+        JS --> RV["[[Agente Runtime Validation]]"]
+        RV --> OAPI["[[Agente OpenAPI]]"]
     end
 
-    subgraph P3 [3. Patrones & Adaptadores]
+    subgraph P3 [3. Patrones & Arquitectura]
         MM["[[Agente Monolito Modular]]"] --> HEX["[[Agente Hexagonal]]"]
         HEX --> CLEAN["[[Agente Clean Architecture]]"]
     end
@@ -65,16 +66,23 @@ flowchart TD
     subgraph P4 [4. Resiliencia & Seguridad]
         CB["[[Agente Circuit Breaker]]"] --> ZT["[[Agente Zero Trust]]"]
         ZT --> AAS_SEC["[[Skill AAS Security Engineer]]"]
-        AAS_SEC --> AAS_OBS["[[Skill AAS Observability Monitoring]]"]
     end
 
-    subgraph P5 [5. DevOps, QA & Plataforma]
+    subgraph P5 [5. Observabilidad & Confiabilidad]
+        OTEL["[[Agente OpenTelemetry]]"] --> LOG["[[Agente Structured Logging]]"]
+        LOG --> SLO["[[Agente SLI SLO]]"]
+    end
+
+    subgraph P6 [6. Infraestructura & Plataforma]
         DOCKER["[[Agente Docker OCI]]"] --> CI["[[Agente CI CD Pipeline]]"]
-        CI --> AAS_QA["[[Skill AAS QA Test Automation]]"]
-        AAS_QA --> AAS_DEV["[[Skill AAS DevOps Cloud]]"]
+        CI --> AAS_DEV["[[Skill AAS DevOps Cloud]]"]
     end
 
-    subgraph P6 [6. Gobernanza & Auditoría]
+    subgraph P7 [7. Presentación & Frontend]
+        UIUX["[[Skill AAS UI UX Pro Max]]"] --> FRONT["[[Skill AAS Frontend Design]]"]
+    end
+
+    subgraph GOB [Gobernanza & Calidad - Transversal]
         TDD["[[Agente TDD]]"] --> EDD["[[Agente EDD]]"]
         EDD --> FF["[[Agente Fitness Functions]]"]
         FF --> ADR["[[Agente ADR]]"]
@@ -82,17 +90,15 @@ flowchart TD
         RFC --> AAS_CR["[[Skill AAS Code Review]]"]
     end
 
-    subgraph P7 [7. Presentación & Frontend]
-        UIUX["[[Skill AAS UI UX Pro Max]]"] --> FRONT["[[Skill AAS Frontend Design]]"]
-    end
-
     P1 --> P2
     P2 --> P3
     P3 --> P4
     P4 --> P5
+    P5 --> P6
     P2 --> P7
-    P6 -.-> P1
-    P6 -.-> P3
+    GOB -.-> P1
+    GOB -.-> P3
+    GOB -.-> P6
 ```
 
 ## 3. Checklist de Auditoría (Definition of Done)

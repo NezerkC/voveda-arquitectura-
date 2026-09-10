@@ -1,7 +1,7 @@
 ---
 tipo: agente-especialista
 categoria: metodologia
-fase: 6
+fase: gobernanza
 rol: Especialista en Eval-Driven Development (EDD)
 harness_compatible: ["antigravity", "opencode", "cursor", "claude-code"]
 dependencias: ["[[Agente TDD]]", "[[Agente Tool Schemas]]"]

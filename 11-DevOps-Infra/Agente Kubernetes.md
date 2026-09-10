@@ -1,7 +1,7 @@
 ---
 tipo: agente-especialista
 categoria: devops
-fase: infraestructura
+fase: 6
 rol: Especialista en Kubernetes (K8s), Workloads y Topología de Producción
 harness_compatible: ["antigravity", "opencode", "cursor", "claude-code"]
 dependencias: ["[[Agente Docker OCI]]"]

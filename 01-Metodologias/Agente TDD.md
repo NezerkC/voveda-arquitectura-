@@ -1,7 +1,7 @@
 ---
 tipo: agente-especialista
 categoria: metodologia
-fase: 6
+fase: gobernanza
 rol: Especialista en Test-Driven Development (TDD)
 harness_compatible: ["antigravity", "opencode", "cursor", "claude-code"]
 dependencias: ["[[Agente CDD]]", "[[Agente Hexagonal]]"]

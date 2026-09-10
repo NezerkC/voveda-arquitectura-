@@ -1,7 +1,7 @@
 ---
 tipo: agente-especialista
 categoria: devops
-fase: infraestructura
+fase: 6
 rol: Especialista en Docker, Imágenes OCI y Seguridad de Contenedores
 harness_compatible: ["antigravity", "opencode", "cursor", "claude-code"]
 dependencias: ["[[Agente Zero Trust]]", "[[Agente Hexagonal]]"]

@@ -7,8 +7,8 @@ tags:
   - dominio/[NOMBRE_DEL_DOMINIO]
   - fase/[NUMERO_DE_FASE]
 skills_vinculadas:
-  - "[[Nombre de la Skill 1]]"
-  - "[[Nombre de la Skill 2]]"
+  - "[Nombre de la Skill 1]"
+  - "[Nombre de la Skill 2]"
 ---
 
 # HUB DE [NOMBRE DEL DOMINIO] (BLUEPRINT)
@@ -19,7 +19,7 @@ skills_vinculadas:
 ## 1. Reglas de Implementación
 1. **Archivo 100% Pasivo:** Un Hub jamás debe contener prompts, instrucciones de sistema, ni variables de entorno. Es un registro estático que no consume LLM.
 2. **Taxonomía Estricta:** Reemplaza `[NUMERO_DE_FASE]` y `[NOMBRE_DEL_DOMINIO]` en el YAML respetando minúsculas y sin espacios.
-3. **Punteros Bidireccionales:** La lista de `skills_vinculadas` usa la sintaxis `[[Nombre del Archivo]]`. Si el archivo de la skill no existe, el Orquestador fallará rápido (Fail-Fast).
+3. **Punteros Bidireccionales:** La lista de `skills_vinculadas` usa la sintaxis `\[\[Nombre de la Nota\]\]` (entre corchetes dobles de WikiLink). Si el archivo de la skill no existe, el Orquestador fallará rápido (Fail-Fast).
 
 ## 2. Flujo de Ejecución (Scatter-Gather)
 El Orquestador lee los punteros de este archivo e internamente:

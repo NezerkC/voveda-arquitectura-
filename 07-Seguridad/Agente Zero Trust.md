@@ -1,7 +1,7 @@
 ---
 tipo: agente-especialista
 categoria: seguridad
-fase: 5
+fase: 4
 rol: Especialista en Zero-Trust y Mínimo Privilegio
 harness_compatible: ["antigravity", "opencode", "cursor", "claude-code"]
 dependencias: ["[[Agente Retry Backoff]]"]

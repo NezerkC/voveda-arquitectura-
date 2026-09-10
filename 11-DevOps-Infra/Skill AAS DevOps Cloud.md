@@ -2,7 +2,7 @@
 tipo: skill-externa
 origen: agentic-awesome-skills
 categoria: devops-infra
-fase: 5
+fase: 6
 rol: Cloud DevOps & QA Automation Engineer
 harness_compatible: ["universal"]
 dependencias: ["[[Agente CI CD Pipeline]]"]
@@ -23,7 +23,7 @@ OBJECTIVE: Automate testing pipelines (Playwright, E2E), stabilize deployments,
 ```
 
 ## 1. Posición en el Flujo de Trabajo
-Esta skill se ejecuta en la **Fase 5 (DevOps, QA & Plataforma)**. Toma los contenedores OCI aprobados e instrumenta las tuberías de CI/CD para despliegue.
+Esta skill se ejecuta en la **Fase 6 (Infraestructura, QA & Despliegue)**. Toma los contenedores OCI aprobados e instrumenta las tuberías de CI/CD para despliegue.
 
 ## 2. Responsabilidades
 - Diseñar e implementar pruebas End-to-End (E2E).

@@ -17,7 +17,7 @@ Sistema integral de arquitectura de software, infraestructura cloud-native y met
 
 ---
 
-## 🗂️ Catálogo Completo de Agentes Especialistas (12 Módulos)
+## 🗂️ Catálogo Completo de Agentes Especialistas (13 Módulos)
 
 ### 01. Metodologías de Diseño y Desarrollo (XDD)
 - [[Agente RDD]] — *README-Driven Development (Visión e interfaz pública)*
@@ -44,6 +44,7 @@ Sistema integral de arquitectura de software, infraestructura cloud-native y met
 - [[Agente ADR]] — *Architecture Decision Records (Registro inmutable de trade-offs)*
 - [[Agente RFC]] — *Request for Comments (Propuestas técnicas colaborativas)*
 - [[Agente Fitness Functions]] — *Verificación automatizada de arquitectura en CI/CD*
+- [[Skill AAS Code Review]] — *Revisión estricta de PRs, invariantes de Clean Architecture y gates de merge*
 
 ### 05. Patrones de Resiliencia y Consistencia
 - [[Agente Idempotencia]] — *Llaves de idempotencia y prevención de doble procesamiento*
@@ -60,6 +61,7 @@ Sistema integral de arquitectura de software, infraestructura cloud-native y met
 - [[Agente Zero Trust]] — *Principio de menor privilegio y tokens efímeros*
 - [[Agente Sanitizacion Fronteras]] — *Defensa contra Prompt Injection y sanitización de I/O*
 - [[Agente Sandbox Aislamiento]] — *Ejecución segura de código dinámico en microVMs*
+- [[Skill AAS Security Engineer]] — *Auditoría de vulnerabilidades OWASP, SAST/SCA y hardening*
 
 ### 08. Especialistas en Lenguajes
 - [[Agente TypeScript]] — *Tipado estricto, Result Types y tsconfig de producción*
@@ -68,9 +70,10 @@ Sistema integral de arquitectura de software, infraestructura cloud-native y met
 - [[Agente Rust]] — *Memory safety, Tokio async y Traits para puertos*
 
 ### 09. Especialistas en Frameworks y Runtimes
-- [[Agente FastAPI]] — *Driving Adapters REST asíncronos y DI nativo*
+- [[Agente React]] — *Arquitectura de componentes, Custom Hooks desacoplados y estado inmutable*
 - [[Agente NextJS]] — *Server Components, Server Actions seguras y patrón BFF*
 - [[Agente NestJS Fastify]] — *Inyección de dependencias modular sobre motor Fastify*
+- [[Agente FastAPI]] — *Driving Adapters REST asíncronos y DI nativo*
 
 ### 10. Persistencia y Almacenamiento
 - [[Agente PostgreSQL]] — *Modelado relacional, índices concurrentes y Zero-Downtime*
@@ -83,6 +86,7 @@ Sistema integral de arquitectura de software, infraestructura cloud-native y met
 - [[Agente CI CD Pipeline]] — *Pipelines deterministas en GitHub Actions / GitLab CI*
 - [[Agente Terraform IaC]] — *Infrastructure as Code modular con remote state locking*
 - [[Agente GitOps]] — *Despliegues declarativos con ArgoCD / Flux y auto-healing*
+- [[Skill AAS DevOps Cloud]] — *Automatización de infraestructura cloud y pipelines de despliegue*
 
 ### 12. Metodologías Ágiles e Ingeniería de Entrega
 - [[Agente Scrum]] — *Sprints con Definition of Done e incremento vertical (INVEST)*

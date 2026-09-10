@@ -1,7 +1,7 @@
 ---
 tipo: agente-especialista
 categoria: gobernanza
-fase: 6
+fase: gobernanza
 rol: Especialista en Architectural Fitness Functions
 harness_compatible: ["antigravity", "opencode", "cursor", "claude-code"]
 dependencias: ["[[Agente Hexagonal]]", "[[Agente Clean Architecture]]"]

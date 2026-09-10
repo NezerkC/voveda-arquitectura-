@@ -1,7 +1,7 @@
 ---
 tipo: agente-especialista
 categoria: seguridad
-fase: 5
+fase: 4
 rol: Especialista en Aislamiento de Ejecución y Sandboxing
 harness_compatible: ["antigravity", "opencode", "cursor", "claude-code"]
 dependencias: ["[[Agente Sanitizacion Fronteras]]", "[[Agente Tool Schemas]]"]

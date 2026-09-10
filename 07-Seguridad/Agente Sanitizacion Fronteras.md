@@ -1,7 +1,7 @@
 ---
 tipo: agente-especialista
 categoria: seguridad
-fase: 5
+fase: 4
 rol: Especialista en Sanitización de Fronteras y Defensa contra Prompt Injection
 harness_compatible: ["antigravity", "opencode", "cursor", "claude-code"]
 dependencias: ["[[Agente Zero Trust]]"]
