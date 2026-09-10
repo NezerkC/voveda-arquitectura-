@@ -7,12 +7,12 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     :root {
-      --background: #0f172a;
-      --content: #1e293b;
-      --card: #1e293b;
-      --border: #334155;
-      --foreground: #f8fafc;
-      --muted-foreground: #94a3b8;
+      --background: #030712;
+      --content: #0b0f19;
+      --card: #111827;
+      --border: #1f2937;
+      --foreground: #f9fafb;
+      --muted-foreground: #d1d5db;
       --primary: #3b82f6;
       --primary-foreground: #ffffff;
       --accent: #8b5cf6;
@@ -23,27 +23,41 @@
       background-color: var(--background);
       color: var(--foreground);
       font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      -webkit-font-smoothing: antialiased;
     }
     .glass-panel {
-      background: rgba(30, 41, 59, 0.75);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(11, 15, 25, 0.92);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
     }
     .badge-pill {
       display: inline-flex;
       align-items: center;
-      padding: 0.2rem 0.6rem;
+      padding: 0.25rem 0.65rem;
       border-radius: 9999px;
       font-size: 0.75rem;
-      font-weight: 600;
+      font-weight: 700;
+      letter-spacing: 0.025em;
+    }
+    .tab-btn {
+      background: #0b0f19;
+      color: #e2e8f0;
+      border: 1px solid #334155;
+    }
+    .tab-btn:hover {
+      border-color: #60a5fa;
+      color: #ffffff;
     }
     .tab-btn.active {
-      background: #3b82f6;
+      background: #2563eb;
       color: #ffffff;
-      box-shadow: 0 4px 14px 0 rgba(59, 130, 246, 0.39);
+      border-color: #3b82f6;
+      box-shadow: 0 4px 14px 0 rgba(37, 99, 235, 0.5);
     }
     .kanban-col {
       min-height: 520px;
+      background: rgba(11, 15, 25, 0.95);
+      border: 1px solid #1f2937;
     }
     /* Custom scrollbar */
     ::-webkit-scrollbar {
@@ -51,10 +65,10 @@
       height: 6px;
     }
     ::-webkit-scrollbar-track {
-      background: #0f172a;
+      background: #030712;
     }
     ::-webkit-scrollbar-thumb {
-      background: #334155;
+      background: #374151;
       border-radius: 3px;
     }
   </style>
@@ -63,29 +77,29 @@
 
   <!-- Header / Hero Section -->
   <header class="max-w-7xl mx-auto mb-8 text-center">
-    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-semibold uppercase tracking-wider mb-3">
+    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-300 text-xs font-bold uppercase tracking-wider mb-3 shadow-sm">
       <span class="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
       Sistema Multiagente Enterprise • 47 Agentes Especialistas
     </div>
-    <h1 class="text-2xl md:text-4xl font-extrabold tracking-tight mb-3 bg-gradient-to-r from-blue-400 via-indigo-300 to-purple-400 bg-clip-text text-transparent">
+    <h1 class="text-2xl md:text-4xl font-black tracking-tight mb-3 bg-gradient-to-r from-blue-300 via-indigo-200 to-purple-300 bg-clip-text text-transparent">
       Centro de Mando & Tablero Kanban de Arquitectura
     </h1>
-    <p class="text-slate-400 max-w-3xl mx-auto text-xs md:text-sm">
-      Visualizá la cadena de mando completa: desde el descubrimiento del <span class="text-blue-400 font-semibold">Product Manager</span>, el control de flujo en el <span class="text-purple-400 font-semibold">Tablero Kanban del Scrum Master</span>, hasta los 12 pilares técnicos.
+    <p class="text-slate-200 max-w-3xl mx-auto text-xs md:text-sm font-medium leading-relaxed">
+      Visualizá la cadena de mando completa: desde el descubrimiento del <span class="text-blue-300 font-bold">Product Manager</span>, el control de flujo en el <span class="text-purple-300 font-bold">Tablero Kanban del Scrum Master</span>, hasta los 13 pilares técnicos.
     </p>
 
     <!-- Navigation Tabs -->
     <div class="flex flex-wrap justify-center gap-2 mt-6">
-      <button onclick="switchTab('kanban')" id="tab-btn-kanban" class="tab-btn active px-4 py-2 rounded-xl font-medium text-xs md:text-sm transition-all border border-slate-700 hover:border-blue-500 flex items-center gap-2">
+      <button onclick="switchTab('kanban')" id="tab-btn-kanban" class="tab-btn active px-4 py-2 rounded-xl font-semibold text-xs md:text-sm transition-all flex items-center gap-2">
         <span>📋</span> Tablero Kanban (Scrum Master)
       </button>
-      <button onclick="switchTab('flow')" id="tab-btn-flow" class="tab-btn px-4 py-2 rounded-xl font-medium text-xs md:text-sm text-slate-300 transition-all border border-slate-700 hover:border-blue-500 flex items-center gap-2">
+      <button onclick="switchTab('flow')" id="tab-btn-flow" class="tab-btn px-4 py-2 rounded-xl font-semibold text-xs md:text-sm transition-all flex items-center gap-2">
         <span>🔄</span> Flujo Jerárquico (PM &rarr; SM &rarr; Lead)
       </button>
-      <button onclick="switchTab('agents')" id="tab-btn-agents" class="tab-btn px-4 py-2 rounded-xl font-medium text-xs md:text-sm text-slate-300 transition-all border border-slate-700 hover:border-blue-500 flex items-center gap-2">
+      <button onclick="switchTab('agents')" id="tab-btn-agents" class="tab-btn px-4 py-2 rounded-xl font-semibold text-xs md:text-sm transition-all flex items-center gap-2">
         <span>👥</span> Directorio de 47 Agentes
       </button>
-      <button onclick="switchTab('skills')" id="tab-btn-skills" class="tab-btn px-4 py-2 rounded-xl font-medium text-xs md:text-sm text-slate-300 transition-all border border-slate-700 hover:border-blue-500 flex items-center gap-2">
+      <button onclick="switchTab('skills')" id="tab-btn-skills" class="tab-btn px-4 py-2 rounded-xl font-semibold text-xs md:text-sm transition-all flex items-center gap-2">
         <span>⚡</span> Skills Multiagente & Pipeline
       </button>
     </div>
@@ -99,25 +113,25 @@
     <section id="view-kanban" class="space-y-6">
       
       <!-- Top Metrics & Action Bar -->
-      <div class="glass-panel p-4 rounded-2xl border border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4">
+      <div class="glass-panel p-4 rounded-2xl border border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4 shadow-xl">
         <div class="flex flex-wrap items-center gap-4 text-xs font-mono">
-          <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800">
-            <span class="text-slate-400">WIP Actual:</span>
-            <span id="metric-wip" class="text-blue-400 font-bold">2 / 5</span>
+          <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#070b14] border border-slate-700/80">
+            <span class="text-slate-300 font-semibold">WIP Actual:</span>
+            <span id="metric-wip" class="text-blue-300 font-bold">2 / 5</span>
           </div>
-          <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800">
-            <span class="text-slate-400">Estado de Flujo:</span>
-            <span class="text-emerald-400 font-bold flex items-center gap-1">
+          <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#070b14] border border-slate-700/80">
+            <span class="text-slate-300 font-semibold">Estado de Flujo:</span>
+            <span class="text-emerald-300 font-bold flex items-center gap-1">
               <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Óptimo (Sin Cuellos de Botella)
             </span>
           </div>
-          <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800">
-            <span class="text-slate-400">Ley de Little:</span>
-            <span class="text-purple-300">Stop Starting, Start Finishing</span>
+          <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#070b14] border border-slate-700/80">
+            <span class="text-slate-300 font-semibold">Ley de Little:</span>
+            <span class="text-purple-300 font-semibold">Stop Starting, Start Finishing</span>
           </div>
         </div>
 
-        <button onclick="openNewTaskModal()" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-medium text-xs transition-all shadow-lg shadow-blue-500/20 flex items-center gap-1.5">
+        <button onclick="openNewTaskModal()" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs transition-all shadow-lg shadow-blue-500/30 flex items-center gap-1.5">
           <span>➕</span> Nueva Historia (Scrum Master)
         </button>
       </div>
@@ -126,13 +140,13 @@
       <div class="grid grid-cols-1 md:grid-cols-5 gap-3.5">
         
         <!-- Col 1: Backlog (PRD) -->
-        <div class="flex flex-col bg-slate-900/60 p-3 rounded-2xl border border-slate-800/80 kanban-col">
+        <div class="flex flex-col p-3 rounded-2xl border border-slate-800 kanban-col shadow-lg">
           <div class="flex items-center justify-between pb-3 mb-3 border-b border-slate-800">
             <div class="flex items-center gap-1.5">
               <span class="text-base">📥</span>
-              <h3 class="font-bold text-xs text-white">Backlog (PRD)</h3>
+              <h3 class="font-bold text-sm text-white">Backlog (PRD)</h3>
             </div>
-            <span class="badge-pill bg-slate-800 text-slate-400 text-[10px]" id="count-backlog">0</span>
+            <span class="badge-pill bg-slate-800 text-slate-100 text-xs font-bold border border-slate-700" id="count-backlog">0</span>
           </div>
           <div id="col-backlog" class="space-y-3 flex-1 overflow-y-auto">
             <!-- Cards rendered by JS -->
@@ -140,15 +154,15 @@
         </div>
 
         <!-- Col 2: Ready for Dev (DoR) -->
-        <div class="flex flex-col bg-slate-900/60 p-3 rounded-2xl border border-slate-800/80 kanban-col">
+        <div class="flex flex-col p-3 rounded-2xl border border-blue-900/40 kanban-col shadow-lg">
           <div class="flex items-center justify-between pb-3 mb-3 border-b border-slate-800">
             <div class="flex items-center gap-1.5">
               <span class="text-base">📋</span>
-              <h3 class="font-bold text-xs text-white">Ready (DoR)</h3>
+              <h3 class="font-bold text-sm text-blue-200">Ready (DoR)</h3>
             </div>
             <div class="flex items-center gap-1">
-              <span class="badge-pill bg-blue-950/80 text-blue-400 text-[10px] border border-blue-800/40">WIP &le; 3</span>
-              <span class="badge-pill bg-slate-800 text-slate-400 text-[10px]" id="count-ready">0</span>
+              <span class="badge-pill bg-blue-950 text-blue-200 text-xs font-bold border border-blue-700">WIP &le; 3</span>
+              <span class="badge-pill bg-slate-800 text-slate-100 text-xs font-bold border border-slate-700" id="count-ready">0</span>
             </div>
           </div>
           <div id="col-ready" class="space-y-3 flex-1 overflow-y-auto">
@@ -157,15 +171,15 @@
         </div>
 
         <!-- Col 3: En Progreso (Especialistas) -->
-        <div class="flex flex-col bg-slate-900/80 p-3 rounded-2xl border border-purple-900/40 kanban-col shadow-inner">
+        <div class="flex flex-col p-3 rounded-2xl border border-purple-800/60 kanban-col shadow-xl">
           <div class="flex items-center justify-between pb-3 mb-3 border-b border-slate-800">
             <div class="flex items-center gap-1.5">
               <span class="text-base">⚙️</span>
-              <h3 class="font-bold text-xs text-purple-300">En Progreso</h3>
+              <h3 class="font-bold text-sm text-purple-200">En Progreso</h3>
             </div>
             <div class="flex items-center gap-1">
-              <span class="badge-pill bg-purple-950/80 text-purple-400 text-[10px] border border-purple-800/40">WIP &le; 2</span>
-              <span class="badge-pill bg-slate-800 text-slate-400 text-[10px]" id="count-inprogress">0</span>
+              <span class="badge-pill bg-purple-950 text-purple-200 text-xs font-bold border border-purple-700">WIP &le; 2</span>
+              <span class="badge-pill bg-slate-800 text-slate-100 text-xs font-bold border border-slate-700" id="count-inprogress">0</span>
             </div>
           </div>
           <div id="col-inprogress" class="space-y-3 flex-1 overflow-y-auto">
@@ -174,15 +188,15 @@
         </div>
 
         <!-- Col 4: Review & Fitness Tests -->
-        <div class="flex flex-col bg-slate-900/60 p-3 rounded-2xl border border-slate-800/80 kanban-col">
+        <div class="flex flex-col p-3 rounded-2xl border border-amber-900/40 kanban-col shadow-lg">
           <div class="flex items-center justify-between pb-3 mb-3 border-b border-slate-800">
             <div class="flex items-center gap-1.5">
               <span class="text-base">🧪</span>
-              <h3 class="font-bold text-xs text-amber-300">Fitness & QA</h3>
+              <h3 class="font-bold text-sm text-amber-200">Fitness & QA</h3>
             </div>
             <div class="flex items-center gap-1">
-              <span class="badge-pill bg-amber-950/80 text-amber-400 text-[10px] border border-amber-800/40">WIP &le; 2</span>
-              <span class="badge-pill bg-slate-800 text-slate-400 text-[10px]" id="count-review">0</span>
+              <span class="badge-pill bg-amber-950 text-amber-200 text-xs font-bold border border-amber-700">WIP &le; 2</span>
+              <span class="badge-pill bg-slate-800 text-slate-100 text-xs font-bold border border-slate-700" id="count-review">0</span>
             </div>
           </div>
           <div id="col-review" class="space-y-3 flex-1 overflow-y-auto">
@@ -191,13 +205,13 @@
         </div>
 
         <!-- Col 5: Done (Producción OCI) -->
-        <div class="flex flex-col bg-slate-900/60 p-3 rounded-2xl border border-emerald-900/40 kanban-col">
+        <div class="flex flex-col p-3 rounded-2xl border border-emerald-900/40 kanban-col shadow-lg">
           <div class="flex items-center justify-between pb-3 mb-3 border-b border-slate-800">
             <div class="flex items-center gap-1.5">
               <span class="text-base">🚀</span>
-              <h3 class="font-bold text-xs text-emerald-300">Done (Deploy)</h3>
+              <h3 class="font-bold text-sm text-emerald-200">Done (Deploy)</h3>
             </div>
-            <span class="badge-pill bg-emerald-950/80 text-emerald-400 text-[10px] border border-emerald-800/40" id="count-done">0</span>
+            <span class="badge-pill bg-emerald-950 text-emerald-200 text-xs font-bold border border-emerald-700" id="count-done">0</span>
           </div>
           <div id="col-done" class="space-y-3 flex-1 overflow-y-auto">
             <!-- Cards rendered by JS -->
@@ -207,6 +221,7 @@
       </div>
 
     </section>
+
 
     <!-- ============================================================= -->
     <!-- TAB 1: FLUJO JERÁRQUICO (START-NEW-PROJECT)                   -->
@@ -218,46 +233,46 @@
           <span class="p-2 rounded-lg bg-blue-500/20 text-blue-400 text-lg">🎯</span>
           Skill <code class="text-blue-400 bg-blue-950/50 px-2 py-0.5 rounded border border-blue-800/40">start-new-project</code>: Cadena de Mando
         </h2>
-        <p class="text-slate-400 text-sm mb-6">
+        <p class="text-slate-200 text-sm mb-6 font-medium">
           Separación estricta entre definición de negocio, planificación ágil y ejecución técnica. Hacé clic en cada rol para ver sus detalles, inputs y entregables.
         </p>
 
         <!-- Stepper Visualizer -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4 relative">
-          <div onclick="selectFlowStep(1)" id="flow-card-1" class="cursor-pointer p-5 rounded-xl border-2 border-blue-500 bg-slate-800/80 transition-all hover:scale-[1.02] shadow-lg shadow-blue-500/10">
+          <div onclick="selectFlowStep(1)" id="flow-card-1" class="cursor-pointer p-5 rounded-xl border-2 border-blue-500 bg-[#141d33] transition-all hover:scale-[1.02] shadow-lg shadow-blue-500/20">
             <div class="flex items-center justify-between mb-3">
-              <span class="badge-pill bg-slate-700 text-slate-300">Paso 1</span>
+              <span class="badge-pill bg-slate-800 text-slate-100 text-xs font-bold border border-slate-700">Paso 1</span>
               <span class="text-2xl">👤</span>
             </div>
             <h3 class="font-bold text-white text-base mb-1">Usuario / Stakeholder</h3>
-            <p class="text-slate-400 text-xs line-clamp-2">Plantea la idea, problema a resolver y preferencias técnicas.</p>
+            <p class="text-slate-200 text-xs line-clamp-2 leading-relaxed">Plantea la idea, problema a resolver y preferencias técnicas.</p>
           </div>
 
-          <div onclick="selectFlowStep(2)" id="flow-card-2" class="cursor-pointer p-5 rounded-xl border border-slate-700 bg-slate-800/40 transition-all hover:scale-[1.02]">
+          <div onclick="selectFlowStep(2)" id="flow-card-2" class="cursor-pointer p-5 rounded-xl border border-slate-700 bg-[#0b0f19] transition-all hover:scale-[1.02]">
             <div class="flex items-center justify-between mb-3">
-              <span class="badge-pill bg-blue-500/20 text-blue-400">Paso 2</span>
+              <span class="badge-pill bg-blue-950 text-blue-200 border border-blue-700 text-xs font-bold">Paso 2</span>
               <span class="text-2xl">📋</span>
             </div>
             <h3 class="font-bold text-white text-base mb-1">Agente Product Manager</h3>
-            <p class="text-slate-400 text-xs line-clamp-2">Entrevista guiada. Descubrimiento de reglas de negocio y PRD.</p>
+            <p class="text-slate-200 text-xs line-clamp-2 leading-relaxed">Entrevista guiada. Descubrimiento de reglas de negocio y PRD.</p>
           </div>
 
-          <div onclick="selectFlowStep(3)" id="flow-card-3" class="cursor-pointer p-5 rounded-xl border border-slate-700 bg-slate-800/40 transition-all hover:scale-[1.02]">
+          <div onclick="selectFlowStep(3)" id="flow-card-3" class="cursor-pointer p-5 rounded-xl border border-slate-700 bg-[#0b0f19] transition-all hover:scale-[1.02]">
             <div class="flex items-center justify-between mb-3">
-              <span class="badge-pill bg-purple-500/20 text-purple-400">Paso 3</span>
+              <span class="badge-pill bg-purple-950 text-purple-200 border border-purple-700 text-xs font-bold">Paso 3</span>
               <span class="text-2xl">📊</span>
             </div>
             <h3 class="font-bold text-white text-base mb-1">Agente Scrum Master</h3>
-            <p class="text-slate-400 text-xs line-clamp-2">Desglose en Épicas, Historias (DoR) y límites de WIP.</p>
+            <p class="text-slate-200 text-xs line-clamp-2 leading-relaxed">Desglose en Épicas, Historias (DoR) y límites de WIP.</p>
           </div>
 
-          <div onclick="selectFlowStep(4)" id="flow-card-4" class="cursor-pointer p-5 rounded-xl border border-slate-700 bg-slate-800/40 transition-all hover:scale-[1.02]">
+          <div onclick="selectFlowStep(4)" id="flow-card-4" class="cursor-pointer p-5 rounded-xl border border-slate-700 bg-[#0b0f19] transition-all hover:scale-[1.02]">
             <div class="flex items-center justify-between mb-3">
-              <span class="badge-pill bg-emerald-500/20 text-emerald-400">Paso 4</span>
+              <span class="badge-pill bg-emerald-950 text-emerald-200 border border-emerald-700 text-xs font-bold">Paso 4</span>
               <span class="text-2xl">👑</span>
             </div>
             <h3 class="font-bold text-white text-base mb-1">Agente Orquestador</h3>
-            <p class="text-slate-400 text-xs line-clamp-2">Lead Architect coordina DAG técnico (DDD, Clean, DB, CI/CD).</p>
+            <p class="text-slate-200 text-xs line-clamp-2 leading-relaxed">Lead Architect coordina DAG técnico (DDD, Clean, DB, CI/CD).</p>
           </div>
         </div>
 
@@ -271,9 +286,9 @@
     <!-- ============================================================= -->
     <section id="view-agents" class="hidden space-y-6">
       
-      <div class="glass-panel p-4 md:p-6 rounded-2xl border border-slate-800 flex flex-col md:flex-row gap-4 justify-between items-center">
-        <div class="w-full md:w-72 relative">
-          <input type="text" id="agent-search" oninput="filterAgents()" placeholder="Buscar agente (ej. DDD, Postgres, Docker)..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500">
+      <div class="glass-panel p-4 md:p-6 rounded-2xl border border-slate-700/80 bg-[#0b0f19] flex flex-col md:flex-row gap-4 justify-between items-center shadow-lg">
+        <div class="w-full md:w-80 relative">
+          <input type="text" id="agent-search" oninput="filterAgents()" placeholder="Buscar agente (ej. DDD, Postgres, Docker)..." class="w-full bg-[#050811] border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400">
         </div>
         
         <div class="flex flex-wrap gap-1.5 justify-center md:justify-end" id="pillar-filters"></div>
@@ -291,84 +306,84 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         
         <!-- Skill Card: start-new-project -->
-        <div class="glass-panel p-6 rounded-2xl border border-blue-500/30 relative overflow-hidden">
+        <div class="glass-panel p-6 rounded-2xl border border-blue-500/50 bg-[#0e1628] shadow-lg relative overflow-hidden">
           <div class="flex items-center justify-between mb-4">
-            <span class="badge-pill bg-blue-500/20 text-blue-400 border border-blue-500/30">Skill de Inicio</span>
-            <span class="text-xs text-slate-400">Multiagente (3 Roles)</span>
+            <span class="badge-pill bg-blue-500/20 text-blue-300 border border-blue-500/40">Skill de Inicio</span>
+            <span class="text-xs text-slate-300 font-medium">Multiagente (3 Roles)</span>
           </div>
           <h3 class="text-xl font-bold text-white mb-2">start-new-project</h3>
-          <p class="text-slate-300 text-sm mb-4">Orquesta el onboarding guiado, redacción del PRD, refinamiento ágil de historias y disparo del desarrollo técnico.</p>
-          <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800 mb-4 text-xs font-mono text-slate-300 space-y-1">
-            <div class="text-blue-400 font-semibold">Cadena de Ejecución:</div>
-            <div>Agente Product Manager &rarr; Agente Scrum Master &rarr; Agente Orquestador</div>
+          <p class="text-slate-200 text-sm mb-4 leading-relaxed font-normal">Orquesta el onboarding guiado, redacción del PRD, refinamiento ágil de historias y disparo del desarrollo técnico.</p>
+          <div class="p-3.5 bg-[#050811] rounded-xl border border-slate-700/90 mb-4 text-xs font-mono text-slate-200 space-y-1.5">
+            <div class="text-blue-300 font-bold">Cadena de Ejecución:</div>
+            <div class="text-slate-100 font-sans text-xs">Agente Product Manager &rarr; Agente Scrum Master &rarr; Agente Orquestador</div>
           </div>
-          <div class="text-xs text-slate-400">
-            <strong>Entregables:</strong> <code class="text-slate-300">docs/PRD.md</code>, <code class="text-slate-300">docs/BACKLOG.md</code>
+          <div class="text-xs text-slate-300">
+            <strong class="text-white">Entregables:</strong> <code class="text-blue-200 bg-[#050811] px-1.5 py-0.5 rounded border border-slate-700">docs/PRD.md</code>, <code class="text-blue-200 bg-[#050811] px-1.5 py-0.5 rounded border border-slate-700">docs/BACKLOG.md</code>
           </div>
         </div>
 
         <!-- Skill Card: skill-ddd-domain-design -->
-        <div class="glass-panel p-6 rounded-2xl border border-purple-500/30 relative overflow-hidden">
+        <div class="glass-panel p-6 rounded-2xl border border-purple-500/50 bg-[#0e1628] shadow-lg relative overflow-hidden">
           <div class="flex items-center justify-between mb-4">
-            <span class="badge-pill bg-purple-500/20 text-purple-400 border border-purple-500/30">Fase 1: Dominio</span>
-            <span class="text-xs text-slate-400">Multiagente (3 Fases)</span>
+            <span class="badge-pill bg-purple-500/20 text-purple-300 border border-purple-500/40">Fase 1: Dominio</span>
+            <span class="text-xs text-slate-300 font-medium">Multiagente (3 Fases)</span>
           </div>
           <h3 class="text-xl font-bold text-white mb-2">skill-ddd-domain-design</h3>
-          <p class="text-slate-300 text-sm mb-4">Modela el corazón del negocio y sus invariantes en código puro, completamente aislado de frameworks y bases de datos.</p>
-          <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800 mb-4 text-xs font-mono text-slate-300 space-y-1">
-            <div class="text-purple-400 font-semibold">Cadena de Ejecución:</div>
-            <div>Agente BDD &rarr; Agente DDD &rarr; Agente CDD</div>
+          <p class="text-slate-200 text-sm mb-4 leading-relaxed font-normal">Modela el corazón del negocio y sus invariantes en código puro, completamente aislado de frameworks y bases de datos.</p>
+          <div class="p-3.5 bg-[#050811] rounded-xl border border-slate-700/90 mb-4 text-xs font-mono text-slate-200 space-y-1.5">
+            <div class="text-purple-300 font-bold">Cadena de Ejecución:</div>
+            <div class="text-slate-100 font-sans text-xs">Agente BDD &rarr; Agente DDD &rarr; Agente CDD</div>
           </div>
-          <div class="text-xs text-slate-400">
-            <strong>Directorio destino:</strong> <code class="text-slate-300">src/domain/</code>
+          <div class="text-xs text-slate-300">
+            <strong class="text-white">Directorio destino:</strong> <code class="text-purple-200 bg-[#050811] px-1.5 py-0.5 rounded border border-slate-700">src/domain/</code>
           </div>
         </div>
 
         <!-- Skill Card: skill-clean-hexagonal-scaffold -->
-        <div class="glass-panel p-6 rounded-2xl border border-indigo-500/30 relative overflow-hidden">
+        <div class="glass-panel p-6 rounded-2xl border border-indigo-500/50 bg-[#0e1628] shadow-lg relative overflow-hidden">
           <div class="flex items-center justify-between mb-4">
-            <span class="badge-pill bg-indigo-500/20 text-indigo-400 border border-indigo-500/30">Fase 2: Arquitectura</span>
-            <span class="text-xs text-slate-400">Multiagente (3 Fases)</span>
+            <span class="badge-pill bg-indigo-500/20 text-indigo-300 border border-indigo-500/40">Fase 2: Arquitectura</span>
+            <span class="text-xs text-slate-300 font-medium">Multiagente (3 Fases)</span>
           </div>
           <h3 class="text-xl font-bold text-white mb-2">skill-clean-hexagonal-scaffold</h3>
-          <p class="text-slate-300 text-sm mb-4">Construye la arquitectura en capas (Puertos y Adaptadores), Casos de Uso y validación estricta en runtime.</p>
-          <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800 mb-4 text-xs font-mono text-slate-300 space-y-1">
-            <div class="text-indigo-400 font-semibold">Cadena de Ejecución:</div>
-            <div>Agente Hexagonal / Clean &rarr; Agente Runtime Validation &rarr; Agente Lenguaje</div>
+          <p class="text-slate-200 text-sm mb-4 leading-relaxed font-normal">Construye la arquitectura en capas (Puertos y Adaptadores), Casos de Uso y validación estricta en runtime.</p>
+          <div class="p-3.5 bg-[#050811] rounded-xl border border-slate-700/90 mb-4 text-xs font-mono text-slate-200 space-y-1.5">
+            <div class="text-indigo-300 font-bold">Cadena de Ejecución:</div>
+            <div class="text-slate-100 font-sans text-xs">Agente Hexagonal / Clean &rarr; Agente Runtime Validation &rarr; Agente Lenguaje</div>
           </div>
-          <div class="text-xs text-slate-400">
-            <strong>Directorios destino:</strong> <code class="text-slate-300">src/application/</code>, <code class="text-slate-300">src/infrastructure/</code>
+          <div class="text-xs text-slate-300">
+            <strong class="text-white">Directorios destino:</strong> <code class="text-indigo-200 bg-[#050811] px-1.5 py-0.5 rounded border border-slate-700">src/application/</code>, <code class="text-indigo-200 bg-[#050811] px-1.5 py-0.5 rounded border border-slate-700">src/infrastructure/</code>
           </div>
         </div>
 
         <!-- Skill Card: skill-resilient-persistence -->
-        <div class="glass-panel p-6 rounded-2xl border border-emerald-500/30 relative overflow-hidden">
+        <div class="glass-panel p-6 rounded-2xl border border-emerald-500/50 bg-[#0e1628] shadow-lg relative overflow-hidden">
           <div class="flex items-center justify-between mb-4">
-            <span class="badge-pill bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">Fase 3: Datos</span>
-            <span class="text-xs text-slate-400">Multiagente (4 Fases)</span>
+            <span class="badge-pill bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">Fase 3: Datos</span>
+            <span class="text-xs text-slate-300 font-medium">Multiagente (4 Fases)</span>
           </div>
           <h3 class="text-xl font-bold text-white mb-2">skill-resilient-persistence</h3>
-          <p class="text-slate-300 text-sm mb-4">Esquema relacional normalizado con migraciones, tabla Outbox transaccional, idempotencia y circuit breakers.</p>
-          <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800 mb-4 text-xs font-mono text-slate-300 space-y-1">
-            <div class="text-emerald-400 font-semibold">Cadena de Ejecución:</div>
-            <div>Agente PostgreSQL &rarr; Agente Outbox &rarr; Agente Idempotencia &rarr; Agente Retries</div>
+          <p class="text-slate-200 text-sm mb-4 leading-relaxed font-normal">Esquema relacional normalizado con migraciones, tabla Outbox transaccional, idempotencia y circuit breakers.</p>
+          <div class="p-3.5 bg-[#050811] rounded-xl border border-slate-700/90 mb-4 text-xs font-mono text-slate-200 space-y-1.5">
+            <div class="text-emerald-300 font-bold">Cadena de Ejecución:</div>
+            <div class="text-slate-100 font-sans text-xs">Agente PostgreSQL &rarr; Agente Outbox &rarr; Agente Idempotencia &rarr; Agente Retries</div>
           </div>
-          <div class="text-xs text-slate-400">
-            <strong>Directorio destino:</strong> <code class="text-slate-300">src/infrastructure/persistence/</code>, <code class="text-slate-300">migrations/</code>
+          <div class="text-xs text-slate-300">
+            <strong class="text-white">Directorio destino:</strong> <code class="text-emerald-200 bg-[#050811] px-1.5 py-0.5 rounded border border-slate-700">src/infrastructure/persistence/</code>, <code class="text-emerald-200 bg-[#050811] px-1.5 py-0.5 rounded border border-slate-700">migrations/</code>
           </div>
         </div>
 
         <!-- Skill Card: production-project-architect (Master) -->
-        <div class="glass-panel p-6 rounded-2xl border border-amber-500/40 relative overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-amber-950/20 md:col-span-2">
+        <div class="glass-panel p-6 rounded-2xl border border-amber-500/50 relative overflow-hidden bg-gradient-to-br from-[#0e1628] via-[#111c33] to-[#251806] md:col-span-2 shadow-xl">
           <div class="flex items-center justify-between mb-4">
-            <span class="badge-pill bg-amber-500/20 text-amber-400 border border-amber-500/30">Meta-Skill Maestra</span>
-            <span class="text-xs text-amber-300 font-semibold">End-to-End (5 Fases)</span>
+            <span class="badge-pill bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold">Meta-Skill Maestra</span>
+            <span class="text-xs text-amber-200 font-bold">End-to-End (5 Fases)</span>
           </div>
           <h3 class="text-xl font-bold text-white mb-2">production-project-architect</h3>
-          <p class="text-slate-300 text-sm mb-4">Orquestador de alto nivel que encadena todas las fases anteriores para construir y desplegar un proyecto enterprise completo.</p>
-          <div class="p-3 bg-slate-950/60 rounded-xl border border-amber-900/40 mb-4 text-xs font-mono text-amber-200/90 space-y-1">
-            <div class="text-amber-400 font-semibold">Pipeline Completo:</div>
-            <div>Dominio (DDD) &rarr; Capas (Clean) &rarr; Datos (Postgres/Outbox) &rarr; Tests (TDD) &rarr; CI/CD (Docker)</div>
+          <p class="text-slate-200 text-sm mb-4 leading-relaxed font-normal">Orquestador de alto nivel que encadena todas las fases anteriores para construir y desplegar un proyecto enterprise completo.</p>
+          <div class="p-3.5 bg-[#050811] rounded-xl border border-amber-500/40 mb-4 text-xs font-mono text-amber-200 space-y-1.5">
+            <div class="text-amber-300 font-bold">Pipeline Completo:</div>
+            <div class="text-slate-100 font-sans text-xs">Dominio (DDD) &rarr; Capas (Clean) &rarr; Datos (Postgres/Outbox) &rarr; Tests (TDD) &rarr; CI/CD (Docker)</div>
           </div>
         </div>
 
@@ -379,9 +394,9 @@
   </main>
 
   <!-- Task Detail Modal -->
-  <div id="task-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="glass-panel p-6 rounded-2xl border border-slate-700 max-w-lg w-full relative">
-      <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg">✕</button>
+  <div id="task-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="glass-panel p-6 rounded-2xl border border-slate-700 max-w-lg w-full relative bg-[#0b0f19] shadow-2xl">
+      <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-300 hover:text-white text-lg font-bold">✕</button>
       <div id="modal-content"></div>
     </div>
   </div>
@@ -514,35 +529,35 @@
         document.getElementById(`count-${col}`).innerText = colTasks.length;
 
         if (colTasks.length === 0) {
-          colEl.innerHTML = `<div class="p-4 text-center text-slate-600 text-xs border border-dashed border-slate-800 rounded-xl my-2">Sin tareas</div>`;
+          colEl.innerHTML = `<div class="p-4 text-center text-slate-400 font-medium text-xs border border-dashed border-slate-800 rounded-xl my-2">Sin tareas</div>`;
           return;
         }
 
         colEl.innerHTML = colTasks.map(t => `
-          <div class="p-3.5 rounded-xl bg-slate-800/90 border border-slate-700/80 hover:border-slate-500 transition-all shadow-sm">
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-[10px] font-mono font-bold text-blue-400">${t.id}</span>
-              <span class="badge-pill text-[9px] ${
-                t.priority === 'CRÍTICA' ? 'bg-red-500/20 text-red-400 border border-red-500/30' :
-                t.priority === 'ALTA' ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' :
-                'bg-slate-700 text-slate-300'
+          <div class="p-4 rounded-xl bg-[#131b2e] border border-slate-700/80 hover:border-blue-400 transition-all shadow-md">
+            <div class="flex items-center justify-between mb-2.5">
+              <span class="text-xs font-mono font-bold text-blue-300 bg-blue-950/90 px-2 py-0.5 rounded border border-blue-800/80">${t.id}</span>
+              <span class="badge-pill text-xs font-bold tracking-wider ${
+                t.priority === 'CRÍTICA' ? 'bg-red-950 text-red-200 border border-red-700' :
+                t.priority === 'ALTA' ? 'bg-amber-950 text-amber-200 border border-amber-700' :
+                'bg-slate-800 text-slate-100 border border-slate-600'
               }">${t.priority}</span>
             </div>
 
-            <h4 class="text-xs font-bold text-white mb-1.5 line-clamp-2">${t.title}</h4>
-            <p class="text-slate-400 text-[11px] line-clamp-2 mb-3 leading-relaxed">${t.desc}</p>
+            <h4 class="text-sm font-bold text-white mb-1.5 leading-snug line-clamp-2">${t.title}</h4>
+            <p class="text-slate-200 text-xs line-clamp-2 mb-3 leading-relaxed font-normal">${t.desc}</p>
 
-            <div class="p-1.5 bg-slate-900/80 rounded-lg border border-slate-800 text-[10px] text-purple-300 font-mono mb-3 flex items-center justify-between">
+            <div class="p-2 bg-[#090e1a] rounded-lg border border-slate-700/80 text-xs text-purple-200 font-semibold mb-3 flex items-center justify-between">
               <span>🤖 ${t.agent}</span>
             </div>
 
             <!-- Card Actions -->
-            <div class="flex items-center justify-between pt-2 border-t border-slate-700/60 text-xs">
-              <button onclick="showTaskDetail('${t.id}')" class="text-blue-400 hover:text-blue-300 text-[11px] font-medium">Ver Detalle</button>
+            <div class="flex items-center justify-between pt-2.5 border-t border-slate-700/80 text-xs">
+              <button onclick="showTaskDetail('${t.id}')" class="text-blue-400 hover:text-blue-200 text-xs font-bold transition-colors">Ver Detalle</button>
               
-              <div class="flex items-center gap-1">
-                ${col !== 'backlog' ? `<button onclick="moveTask('${t.id}', -1)" title="Retroceder estado" class="w-6 h-6 rounded bg-slate-700 hover:bg-slate-600 text-slate-300 flex items-center justify-center text-[10px]">◀</button>` : ''}
-                ${col !== 'done' ? `<button onclick="moveTask('${t.id}', 1)" title="Avanzar estado" class="w-6 h-6 rounded bg-blue-600 hover:bg-blue-500 text-white flex items-center justify-center text-[10px]">▶</button>` : ''}
+              <div class="flex items-center gap-1.5">
+                ${col !== 'backlog' ? `<button onclick="moveTask('${t.id}', -1)" title="Retroceder estado" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-100 border border-slate-700 flex items-center justify-center text-xs font-bold transition-all">◀</button>` : ''}
+                ${col !== 'done' ? `<button onclick="moveTask('${t.id}', 1)" title="Avanzar estado" class="w-7 h-7 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold flex items-center justify-center text-xs shadow-md shadow-blue-500/20 transition-all">▶</button>` : ''}
               </div>
             </div>
           </div>
@@ -580,30 +595,30 @@
       const t = tasks.find(item => item.id === taskId);
       if (!t) return;
       document.getElementById('modal-content').innerHTML = `
-        <div class="flex items-center justify-between mb-3">
-          <span class="badge-pill bg-blue-500/20 text-blue-400 font-mono text-xs">${t.id} • ${t.epic}</span>
-          <span class="badge-pill bg-slate-800 text-slate-300 text-xs">${t.status.toUpperCase()}</span>
+        <div class="flex items-center justify-between mb-3.5">
+          <span class="badge-pill bg-blue-500/20 text-blue-300 font-mono text-xs font-bold border border-blue-500/40">${t.id} • ${t.epic}</span>
+          <span class="badge-pill bg-slate-800 text-slate-100 text-xs font-bold border border-slate-700">${t.status.toUpperCase()}</span>
         </div>
-        <h3 class="text-base font-bold text-white mb-2">${t.title}</h3>
-        <p class="text-slate-300 text-xs mb-4 leading-relaxed">${t.desc}</p>
+        <h3 class="text-lg font-bold text-white mb-2 leading-tight">${t.title}</h3>
+        <p class="text-slate-200 text-xs md:text-sm mb-4 leading-relaxed">${t.desc}</p>
 
-        <div class="space-y-2.5 text-xs font-mono mb-4">
-          <div class="p-2.5 bg-slate-950 rounded-lg border border-slate-800">
-            <span class="text-purple-400 font-bold block mb-0.5">🤖 AGENTE RESPONSABLE:</span>
-            <span class="text-slate-300">${t.agent} (${t.pillar})</span>
+        <div class="space-y-3 text-xs font-mono mb-5">
+          <div class="p-3 bg-[#080d19] rounded-xl border border-slate-700/80">
+            <span class="text-purple-300 font-bold block mb-1">🤖 AGENTE RESPONSABLE:</span>
+            <span class="text-slate-100 font-sans font-medium text-sm">${t.agent} (${t.pillar})</span>
           </div>
-          <div class="p-2.5 bg-slate-950 rounded-lg border border-slate-800">
-            <span class="text-emerald-400 font-bold block mb-0.5">🎯 CRITERIO DE ACEPTACIÓN (DoR):</span>
-            <span class="text-slate-300">${t.criteria}</span>
+          <div class="p-3 bg-[#080d19] rounded-xl border border-slate-700/80">
+            <span class="text-emerald-300 font-bold block mb-1">🎯 CRITERIO DE ACEPTACIÓN (DoR):</span>
+            <span class="text-slate-200 font-sans text-xs leading-relaxed">${t.criteria}</span>
           </div>
-          <div class="p-2.5 bg-slate-950 rounded-lg border border-slate-800">
-            <span class="text-cyan-400 font-bold block mb-0.5">📁 ARCHIVO DESTINO:</span>
-            <span class="text-slate-300">${t.target}</span>
+          <div class="p-3 bg-[#080d19] rounded-xl border border-slate-700/80">
+            <span class="text-cyan-300 font-bold block mb-1">📁 ARCHIVO DESTINO:</span>
+            <span class="text-slate-100 font-mono">${t.target}</span>
           </div>
         </div>
 
         <div class="flex justify-end">
-          <button onclick="closeModal()" class="px-4 py-1.5 rounded-lg bg-slate-700 hover:bg-slate-600 text-white text-xs">Cerrar</button>
+          <button onclick="closeModal()" class="px-5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold border border-slate-600 transition-all">Cerrar</button>
         </div>
       `;
       document.getElementById('task-modal').classList.remove('hidden');
@@ -616,30 +631,31 @@
     function openNewTaskModal() {
       const newId = `US-00${tasks.length + 1}`;
       document.getElementById('modal-content').innerHTML = `
-        <h3 class="text-base font-bold text-white mb-3">➕ Nueva Historia de Usuario (Scrum Master)</h3>
-        <div class="space-y-3 text-xs">
+        <h3 class="text-lg font-bold text-white mb-3">➕ Nueva Historia de Usuario (Scrum Master)</h3>
+        <div class="space-y-3.5 text-xs">
           <div>
-            <label class="block text-slate-400 mb-1">Título de la Historia:</label>
-            <input type="text" id="new-title" placeholder="ej. Implementar Caso de Uso ProcesarPago" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-white">
+            <label class="block text-slate-200 font-semibold mb-1.5">Título de la Historia:</label>
+            <input type="text" id="new-title" placeholder="ej. Implementar Caso de Uso ProcesarPago" class="w-full bg-[#080d19] border border-slate-600 rounded-xl p-2.5 text-white placeholder-slate-400 focus:outline-none focus:border-blue-400">
           </div>
           <div>
-            <label class="block text-slate-400 mb-1">Agente Asignado:</label>
-            <select id="new-agent" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-white">
+            <label class="block text-slate-200 font-semibold mb-1.5">Agente Asignado:</label>
+            <select id="new-agent" class="w-full bg-[#080d19] border border-slate-600 rounded-xl p-2.5 text-white focus:outline-none focus:border-blue-400">
               <option value="Agente DDD">Agente DDD (Dominio)</option>
               <option value="Agente Hexagonal">Agente Hexagonal (Puertos/Casos de Uso)</option>
+              <option value="Agente React">Agente React (Componentes & Hooks)</option>
               <option value="Agente PostgreSQL">Agente PostgreSQL (Persistencia)</option>
               <option value="Agente TDD">Agente TDD (Testing)</option>
               <option value="Agente Docker OCI">Agente Docker OCI (DevOps)</option>
             </select>
           </div>
           <div>
-            <label class="block text-slate-400 mb-1">Criterio de Aceptación (Given-When-Then):</label>
-            <input type="text" id="new-criteria" placeholder="Given ... When ... Then ..." class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-white">
+            <label class="block text-slate-200 font-semibold mb-1.5">Criterio de Aceptación (Given-When-Then):</label>
+            <input type="text" id="new-criteria" placeholder="Given ... When ... Then ..." class="w-full bg-[#080d19] border border-slate-600 rounded-xl p-2.5 text-white placeholder-slate-400 focus:outline-none focus:border-blue-400">
           </div>
         </div>
-        <div class="flex justify-end gap-2 mt-5">
-          <button onclick="closeModal()" class="px-3 py-1.5 rounded-lg bg-slate-700 text-slate-300 text-xs">Cancelar</button>
-          <button onclick="addNewTask('${newId}')" class="px-4 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold">Crear Tarea</button>
+        <div class="flex justify-end gap-2.5 mt-6">
+          <button onclick="closeModal()" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-700 hover:bg-slate-700">Cancelar</button>
+          <button onclick="addNewTask('${newId}')" class="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold shadow-lg shadow-blue-500/30">Crear Tarea</button>
         </div>
       `;
       document.getElementById('task-modal').classList.remove('hidden');
@@ -715,29 +731,29 @@
       for (let i = 1; i <= 4; i++) {
         const card = document.getElementById(`flow-card-${i}`);
         if (i === stepNum) {
-          card.classList.add('border-blue-500', 'bg-slate-800/80', 'shadow-lg', 'shadow-blue-500/10');
-          card.classList.remove('border-slate-700', 'bg-slate-800/40');
+          card.classList.add('border-blue-500', 'bg-[#141d33]', 'shadow-lg', 'shadow-blue-500/20');
+          card.classList.remove('border-slate-700', 'bg-[#0b0f19]');
         } else {
-          card.classList.remove('border-blue-500', 'bg-slate-800/80', 'shadow-lg', 'shadow-blue-500/10');
-          card.classList.add('border-slate-700', 'bg-slate-800/40');
+          card.classList.remove('border-blue-500', 'bg-[#141d33]', 'shadow-lg', 'shadow-blue-500/20');
+          card.classList.add('border-slate-700', 'bg-[#0b0f19]');
         }
       }
 
       const data = flowSteps[stepNum];
       document.getElementById('flow-detail-box').innerHTML = `
-        <div class="flex items-center justify-between mb-3">
-          <h4 class="text-base font-bold text-white">${data.title}</h4>
-          <span class="badge-pill bg-blue-500/20 text-blue-400 border border-blue-500/30 text-xs">${data.badge}</span>
+        <div class="flex items-center justify-between mb-3.5">
+          <h4 class="text-lg font-bold text-white">${data.title}</h4>
+          <span class="badge-pill bg-blue-500/20 text-blue-300 border border-blue-500/40 text-xs font-bold">${data.badge}</span>
         </div>
-        <p class="text-slate-300 text-xs mb-3 leading-relaxed">${data.desc}</p>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs font-mono">
-          <div class="p-2.5 bg-slate-950/70 rounded-lg border border-slate-800">
-            <span class="text-emerald-400 font-bold block mb-1">📥 INPUTS:</span>
-            <span class="text-slate-300">${data.inputs}</span>
+        <p class="text-slate-200 text-sm mb-4 leading-relaxed font-normal">${data.desc}</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 text-xs font-mono">
+          <div class="p-3 bg-[#050811] rounded-xl border border-slate-700/90">
+            <span class="text-emerald-300 font-bold block mb-1.5">📥 INPUTS:</span>
+            <span class="text-slate-200 font-sans text-xs leading-relaxed">${data.inputs}</span>
           </div>
-          <div class="p-2.5 bg-slate-950/70 rounded-lg border border-slate-800">
-            <span class="text-cyan-400 font-bold block mb-1">📤 OUTPUTS:</span>
-            <span class="text-slate-300">${data.outputs}</span>
+          <div class="p-3 bg-[#050811] rounded-xl border border-slate-700/90">
+            <span class="text-cyan-300 font-bold block mb-1.5">📤 OUTPUTS:</span>
+            <span class="text-slate-200 font-sans text-xs leading-relaxed">${data.outputs}</span>
           </div>
         </div>
       `;
@@ -764,6 +780,8 @@
       { name: "Agente Zero Trust", pillar: "07-Seguridad", role: "Especialista en Seguridad Zero Trust", desc: "Aplica autenticación continua, tokens de corta duración y principio de mínimo privilegio." },
       { name: "Agente Python", pillar: "08-Lenguajes", role: "Especialista en Python 3.12+ Moderno", desc: "Código idiomático con uv, pyproject.toml, mypy --strict, Pydantic v2 y AsyncIO nativo." },
       { name: "Agente TypeScript", pillar: "08-Lenguajes", role: "Especialista en TypeScript Estricto", desc: "TypeScript moderno con tsconfig estricto, Zod, empaquetado OCI y tipado seguro." },
+      { name: "Agente React", pillar: "09-Frameworks", role: "Especialista en React & Custom Hooks", desc: "Arquitectura de componentes, Custom Hooks desacoplados, estado inmutable y accesibilidad WAI-ARIA." },
+      { name: "Agente NextJS", pillar: "09-Frameworks", role: "Especialista en Next.js App Router", desc: "Server Components, Server Actions seguras, BFF Pattern y optimización de renderizado híbrido." },
       { name: "Agente PostgreSQL", pillar: "10-Persistencia", role: "Especialista en PostgreSQL Relacional", desc: "Modelado DDL relacional, índices B-Tree/GIN, constraints estrictas y migraciones deterministas." },
       { name: "Agente Docker OCI", pillar: "11-DevOps", role: "Especialista en Docker & Contenedores OCI", desc: "Imágenes multi-stage optimizadas, cache de capas y ejecución estricta bajo usuario nonroot." },
       { name: "Agente CI CD Pipeline", pillar: "11-DevOps", role: "Especialista en GitHub Actions CI/CD", desc: "Pipelines paralelos de lint, typecheck, tests, build y escaneo de vulnerabilidades con Trivy." },
@@ -777,7 +795,7 @@
       const pillars = ['ALL', ...new Set(agentsData.map(a => a.pillar))];
       const container = document.getElementById('pillar-filters');
       container.innerHTML = pillars.map(p => `
-        <button onclick="setFilter('${p}')" class="px-2.5 py-1 rounded-lg text-xs font-medium border transition-all ${currentFilter === p ? 'bg-blue-600 text-white border-blue-500' : 'bg-slate-900/80 text-slate-400 border-slate-800 hover:border-slate-600'}">
+        <button onclick="setFilter('${p}')" class="px-3 py-1.5 rounded-xl text-xs font-bold border transition-all ${currentFilter === p ? 'bg-blue-600 text-white border-blue-400 shadow-md shadow-blue-500/30' : 'bg-[#0b0f19] text-slate-200 border-slate-700 hover:border-slate-500 hover:text-white'}">
           ${p === 'ALL' ? 'Todos (' + agentsData.length + ')' : p.replace(/^\d+-/, '')}
         </button>
       `).join('');
@@ -800,19 +818,19 @@
       });
 
       grid.innerHTML = filtered.map(a => `
-        <div class="glass-panel p-4 rounded-xl border border-slate-800 hover:border-slate-700 transition-all flex flex-col justify-between">
+        <div class="glass-panel p-5 rounded-2xl border border-slate-700/80 hover:border-blue-400/80 transition-all flex flex-col justify-between bg-[#0e1628]/95 shadow-md">
           <div>
-            <div class="flex items-center justify-between mb-2">
-              <span class="badge-pill bg-slate-800 text-slate-400 text-[10px] border border-slate-700/50">${a.pillar}</span>
-              <span class="text-xs text-blue-400 font-mono font-semibold">Specialist</span>
+            <div class="flex items-center justify-between mb-2.5">
+              <span class="badge-pill bg-slate-800 text-slate-100 text-xs font-bold border border-slate-700">${a.pillar}</span>
+              <span class="text-xs text-blue-300 font-mono font-bold">Specialist</span>
             </div>
-            <h4 class="text-sm font-bold text-white mb-1">${a.name}</h4>
-            <div class="text-[11px] text-blue-300/80 mb-2 font-medium">${a.role}</div>
-            <p class="text-slate-400 text-xs leading-relaxed mb-3">${a.desc}</p>
+            <h4 class="text-base font-bold text-white mb-1">${a.name}</h4>
+            <div class="text-xs text-blue-300 mb-2.5 font-semibold">${a.role}</div>
+            <p class="text-slate-200 text-xs leading-relaxed mb-4">${a.desc}</p>
           </div>
-          <div class="pt-2 border-t border-slate-800/80 flex items-center justify-between text-[10px] text-slate-500 font-mono">
+          <div class="pt-3 border-t border-slate-700/80 flex items-center justify-between text-xs text-slate-300 font-mono font-medium">
             <span>Harness: Universal</span>
-            <span class="text-emerald-400">✓ Production Ready</span>
+            <span class="text-emerald-300 font-bold">✓ Production Ready</span>
           </div>
         </div>
       `).join('');
