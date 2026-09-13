@@ -65,6 +65,7 @@ architecture-vault/
 - **Base de Conocimiento**: Apuntar el contexto del agente a esta carpeta para que utilice los estándares formales de arquitectura al proponer o escribir código.
 - **Invocación de Especialistas**: Cuando se requiera implementar un estándar concreto, consultar la nota del agente correspondiente (ejemplo: leer `05-Resiliencia/Agente Circuit Breaker.md` para replicar el patrón de resiliencia exacto).
 - **Orquestación**: Utilizar `Agente Orquestador.md` como prompt de sistema o rol director cuando un agente deba liderar el diseño de una solución de punta a punta.
+- **Pipeline GitOps (Habilidades Nativas)**: Ejecutar `.\compilar_agentes.ps1` (Docs-as-Code). Este script escanea la bóveda, lee los YAML Frontmatters y compila/exporta los archivos Markdown estáticos a la carpeta oculta `.agents/skills/SKILL.md`, volviendo las Skills ejecutables de manera nativa para Antigravity.
 
 ---
 
