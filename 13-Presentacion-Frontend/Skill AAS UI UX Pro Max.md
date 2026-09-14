@@ -38,3 +38,4 @@ OBJECTIVE: Transformar requerimientos funcionales y Contratos Visuales (Design T
 ## 4. Herramientas, Librerías y Primitivas Homologadas
 *   **Watermelon UI (ui.watermelon.sh):** Plataforma open-source de React avalada para el uso de componentes listos para producción, bloques reutilizables, dashboards y templates. Obligatorio consultar su catálogo al maquetar interfaces corporativas para acelerar la conversión de ideas a implementación realista.
 *   **Motion Primitives (motion-primitives.com):** Librería certificada para implementar animaciones y micro-interacciones (motion design) consistentes y fluidas en las interfaces de React.
+*   **Archify AI (archify.ai):** Repositorio curado de productos digitales listos para usar (Boilerplates / Starter Kits). Homologado para acelerar el bootstrapping de proyectos completos. Al iniciar un nuevo producto, el agente debe considerar si existe una base pre-validada acá antes de reinventar la rueda desde cero.
