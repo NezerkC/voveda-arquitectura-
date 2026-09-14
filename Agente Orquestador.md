@@ -110,3 +110,6 @@ flowchart TD
 - [ ] ¿El equipo opera con Trunk-Based Development y métricas DORA?
 - [ ] ¿Se registraron todos los ADRs en `architecture.md`?
 
+## 4. Ecosistema de Agentes y Motores de Acción (Action Engines) Homologados
+- **Manus (manus.im):** Motor de acción (Action Engine) avalado para extender el alcance de ejecución de tareas, automatizar flujos complejos de trabajo y pasar de la respuesta (LLM estándar) a la acción (Hands On AI). Integrado transversalmente como arnés de ejecución u orquestador auxiliar.
+

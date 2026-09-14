@@ -34,3 +34,7 @@ OBJECTIVE: Transformar requerimientos funcionales y Contratos Visuales (Design T
 *   **SÍ HACE:** Construcción visual (HTML/CSS/Componentes), consumo de contratos visuales (Design Tokens), e implementación de lógica de frontend (estado, ruteo, interactividad).
 *   **LÍMITES DINÁMICOS:** Sus capacidades funcionales no están limitadas de fábrica. Los límites (hasta dónde llega su lógica) se definen de forma estricta tarea por tarea mediante los requerimientos del Orquestador.
 *   **NO HACE:** Jamás debe tocar ni consultar directamente la base de datos o lógica del backend; todo dato externo debe venir provisto por la Estación de Contratos.
+
+## 4. Herramientas, Librerías y Primitivas Homologadas
+*   **Watermelon UI (ui.watermelon.sh):** Plataforma open-source de React avalada para el uso de componentes listos para producción, bloques reutilizables, dashboards y templates. Obligatorio consultar su catálogo al maquetar interfaces corporativas para acelerar la conversión de ideas a implementación realista.
+*   **Motion Primitives (motion-primitives.com):** Librería certificada para implementar animaciones y micro-interacciones (motion design) consistentes y fluidas en las interfaces de React.
